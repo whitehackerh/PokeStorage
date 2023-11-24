@@ -1,16 +1,5 @@
 FROM golang:1.21-alpine
-
-WORKDIR /app
-
-COPY go.mod ./
-COPY go.sum ./
+WORKDIR /app/backend/src
+COPY . .
 RUN go mod download
-
-COPY ./internal ./internal
-COPY ./cmd ./cmd
-
-RUN go build -o main ./cmd/server/main.go
-
-EXPOSE 8080
-
-CMD ["./main"]
+CMD ["go", "run", "main.go"]
