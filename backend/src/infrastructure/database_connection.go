@@ -1,14 +1,16 @@
-package DB
+package infrastructure
 
-import "database/sql"
+import (
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
 
-var Db *sql.DB
-
-func ConnectDb() *sql.DB {
+func ConnectDb() *gorm.DB {
 	var err error
-	Db, err = sql.Open("postgres", "user=postgres dbname=pokestorage password=postgres sslmode=disable")
+	dsn := "host=db user=postgres password=postgres dbname=pokestorage port=5432 sslmode=disable TimeZone=Asia/Tokyo"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		panic("failed to connect database")
 	}
-	return Db
+	return db
 }
