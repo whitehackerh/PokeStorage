@@ -11,6 +11,9 @@ import {
 } from "react-router-dom";
 import Header from "./components/modules/Header";
 import HomeBar from "./components/modules/HomeBar";
+import Home from "./components/pages/home/Home";
+import SignIn from "./components/pages/sign_in/SignIn";
+import SignUp from "./components/pages/sign_up/SignUp";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
@@ -32,7 +35,7 @@ const Menu = () => {
     <>
       <Header />
       <HomeBar />
-      {location.pathname === "/" ? <Top /> : <></>}
+        {location.pathname === "/" ? <Top /> : <></>}
       <Outlet />
     </>
   );
@@ -44,6 +47,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Menu />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
           </Route>
         </Routes>
       </BrowserRouter>

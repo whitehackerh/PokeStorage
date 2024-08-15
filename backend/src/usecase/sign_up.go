@@ -7,44 +7,45 @@ import (
 )
 
 type (
-	SignupUseCase interface {
-		Execute(input SignupInput) (SignupOutput, string, error)
+	SignUpUseCase interface {
+		Execute(input SignUpInput) (SignUpOutput, string, error)
 	}
-	SignupInput struct {
+	SignUpInput struct {
 		Username     string `json:"username" binding:"required,max=50"`
 		Password     string `json:"password" binding:"required"`
 		EmailAddress string `json:"email_address" binding:"required,email"`
 		Name         string `json:"name" binding:"required,max=50"`
 	}
-	SignupPresenter interface {
-		Output(entity.User) SignupOutput
+	SignUpPresenter interface {
+		Output(entity.User) SignUpOutput
 	}
-	SignupOutput struct {
+	SignUpOutput struct {
+		// TODO Delete field after develop other api
 		Id           string `json:"id"`
 		Username     string `json:"username"`
 		EmailAddress string `json:"email_address"`
 		Name         string `json:"name"`
 	}
-	SignupInteractor struct {
+	SignUpInteractor struct {
 		service   entity.IUserService
 		auth      middleware.IAuth
-		presenter SignupPresenter
+		presenter SignUpPresenter
 	}
 )
 
-func NewSignupInteractor(
+func NewSignUpInteractor(
 	service entity.IUserService,
 	auth middleware.IAuth,
-	presenter SignupPresenter,
-) SignupUseCase {
-	return &SignupInteractor{
+	presenter SignUpPresenter,
+) SignUpUseCase {
+	return &SignUpInteractor{
 		service:   service,
 		auth:      auth,
 		presenter: presenter,
 	}
 }
 
-func (interactor *SignupInteractor) Execute(input SignupInput) (SignupOutput, string, error) {
+func (interactor *SignUpInteractor) Execute(input SignUpInput) (SignUpOutput, string, error) {
 	user := entity.NewUser(
 		util.NewUUID(),
 		input.Username,

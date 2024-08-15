@@ -12,22 +12,22 @@ import (
 	"github.com/whitehackerh/PokeStorage/src/usecase"
 )
 
-func Signup(c *gin.Context) {
-	var api = "/signup"
-	var input usecase.SignupInput
+func SignUp(c *gin.Context) {
+	var api = "/sign-up"
+	var input usecase.SignUpInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(api, err.Error()))
 		return
 	}
-	uc := usecase.NewSignupInteractor(
+	uc := usecase.NewSignUpInteractor(
 		service.NewUserService(
 			repository.NewUserRepository(
 				infrastructure.ConnectDb(),
 			),
 		),
 		middleware.NewAuth(),
-		presenter.NewSignupPresenter(),
+		presenter.NewSignUpPresenter(),
 	)
 	output, token, err := uc.Execute(input)
 	if err != nil {

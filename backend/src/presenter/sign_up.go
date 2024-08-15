@@ -5,14 +5,14 @@ import (
 	"github.com/whitehackerh/PokeStorage/src/usecase"
 )
 
-type signupPresenter struct{}
+type SignUpPresenter struct{}
 
-func NewSignupPresenter() usecase.SignupPresenter {
-	return signupPresenter{}
+func NewSignUpPresenter() usecase.SignUpPresenter {
+	return &SignUpPresenter{}
 }
 
-func (a signupPresenter) Output(user entity.User) usecase.SignupOutput {
-	return usecase.SignupOutput{
+func (a *SignUpPresenter) Output(user entity.User) usecase.SignUpOutput {
+	return usecase.SignUpOutput{
 		Id:           user.Id(),
 		Username:     user.Username(),
 		EmailAddress: user.EmailAddress(),
