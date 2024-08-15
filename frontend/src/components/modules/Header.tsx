@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import logo from "../../assets/img/logo.png";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
@@ -51,7 +52,7 @@ const Header = () => {
       );
     } else {
       AuthMenu = (
-      <Button style={headerButtonStyle} color="inherit" onClick={() => navigate('/login')}>
+      <Button style={headerButtonStyle} color="inherit" onClick={() => navigate('/sign-in')}>
         SIGN IN
       </Button>
       );
@@ -59,7 +60,7 @@ const Header = () => {
 
     return (
         <>
-            <img alt="picture" onClick={() => navigate('/')} style={{cursor: 'pointer', height: '60px', 'marginLeft': '50px'}}/>
+            <img src={logo} alt="picture" onClick={() => navigate('/')} style={{cursor: 'pointer', height: '60px', 'marginLeft': '50px'}}/>
             {AuthMenu}
             {renderMenu()}
         </>
