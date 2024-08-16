@@ -23,6 +23,7 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.POST("/sign-up", handler.SignUp)
+		api.POST("/sign-in", handler.SignIn)
 	}
 	r.Run()
 }

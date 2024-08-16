@@ -13,8 +13,10 @@ type (
 		name         string
 	}
 	IUserService interface {
-		Create(User) (User, error)
+		Create(User) error
 		MapEntityToModel(User) model.User
+		FindByUsernameAndPassword(string, string) (User, error)
+		MapModelToEntity(model.User) User
 	}
 )
 

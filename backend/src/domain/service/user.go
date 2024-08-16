@@ -11,6 +11,7 @@ type (
 	}
 	IUserRepository interface {
 		Create(model.User) error
+		FindByUsernameAndPassword(string, string) (model.User, error)
 	}
 )
 
@@ -20,13 +21,13 @@ func NewUserService(userRepository IUserRepository) entity.IUserService {
 	}
 }
 
-func (u *UserService) Create(user entity.User) (entity.User, error) {
+func (u *UserService) Create(user entity.User) error {
 	userModel := u.MapEntityToModel(user)
 	err := u.repo.Create(userModel)
 	if err != nil {
-		return user, err
+		return err
 	}
-	return user, err
+	return err
 }
 
 func (u *UserService) MapEntityToModel(user entity.User) model.User {
@@ -37,4 +38,22 @@ func (u *UserService) MapEntityToModel(user entity.User) model.User {
 		EmailAddress: user.EmailAddress(),
 		Name:         user.Name(),
 	}
+}
+
+func (u *UserService) FindByUsernameAndPassword(username string, password string) (entity.User, error) {
+	userModel, err := u.repo.FindByUsernameAndPassword(username, password)
+	if err != nil {
+		return entity.User{}, err
+	}
+	return u.MapModelToEntity(userModel), err
+}
+
+func (u *UserService) MapModelToEntity(model model.User) entity.User {
+	return entity.NewUser(
+		model.Id,
+		model.Username,
+		model.Password,
+		model.EmailAddress,
+		model.Name,
+	)
 }
