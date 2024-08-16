@@ -53,7 +53,7 @@ func (interactor *SignUpInteractor) Execute(input SignUpInput) (SignUpOutput, st
 		input.EmailAddress,
 		input.Name,
 	)
-	user, err := interactor.service.Create(user)
+	err := interactor.service.Create(user)
 	if err != nil {
 		return interactor.presenter.Output(entity.User{}), "", err
 	}
