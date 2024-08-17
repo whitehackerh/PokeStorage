@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import { withTokenRequest, requestHeaders } from '../../http';
 import logo from "../../assets/img/logo.png";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
@@ -27,9 +28,22 @@ const Header = () => {
               open={isMenuOpen}
               onClose={handleMenuClose}
             >
+              <MenuItem onClick={() => {handleMenuClose(); SignOutEvent();}}>Sign Out</MenuItem>
             </Menu>
           );
     }
+
+    const SignOutEvent = () => {
+      requestHeaders.Authorization = `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`;
+      withTokenRequest.post('/auth/sign-out', {
+      },{
+        headers: requestHeaders
+      }).then(() => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('user_id');
+        navigate('/');
+      })
+    };
 
     const headerButtonStyle = {
         cssFloat: 'right',

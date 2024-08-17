@@ -1,6 +1,6 @@
 import axios from 'axios';
 const baseUri = "http://127.0.0.1:8080/api";
-const requestHeaders = {
+export const requestHeaders = {
     "Content-Type": "application/json",
     "Authorization": '',
 };

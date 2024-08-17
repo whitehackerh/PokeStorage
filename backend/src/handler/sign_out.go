@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/whitehackerh/PokeStorage/src/domain/service"
 	"github.com/whitehackerh/PokeStorage/src/infrastructure"
 	"github.com/whitehackerh/PokeStorage/src/middleware"
 	"github.com/whitehackerh/PokeStorage/src/presenter"
@@ -12,28 +11,18 @@ import (
 	"github.com/whitehackerh/PokeStorage/src/usecase"
 )
 
-func SignIn(c *gin.Context) {
-	var api = "/sign-in"
-	var input usecase.SignInInput
+func SignOut(c *gin.Context) {
+	var api = "/sign-out"
+	var input = usecase.SignOutInput{Token: c.MustGet("token").(string), Claims: *c.MustGet("claims").(*middleware.Claims)}
 
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(api, err.Error()))
-		return
-	}
-	uc := usecase.NewSignInInteractor(
-		service.NewUserService(
-			repository.NewUserRepository(
-				infrastructure.ConnectDb(),
-			),
-		),
+	uc := usecase.NewSignOutInteractor(
 		middleware.NewAuth(repository.NewJwtBlacklistRepository(infrastructure.ConnectDb())),
-		presenter.NewSignInPresenter(),
+		presenter.NewSignOutPresenter(),
 	)
-	output, token, err := uc.Execute(input)
+	output, err := uc.Execute(input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(api, err.Error()))
 		return
 	}
-	c.Header("Authorization", "Bearer "+token)
 	c.JSON(200, presenter.NewCommonPresenter(api, output))
 }

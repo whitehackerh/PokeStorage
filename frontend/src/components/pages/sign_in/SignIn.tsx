@@ -25,6 +25,7 @@ const SignIn = () => {
       password: values.password
     })
     .then((res) => {
+      localStorage.setItem('token_type', res.headers.authorization.split(' ')[0]);
       localStorage.setItem('access_token', res.headers.authorization.split(' ')[1]);
       localStorage.setItem('user_id', res.data.data.id);
       navigate('/home');
