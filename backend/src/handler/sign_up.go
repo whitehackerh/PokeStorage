@@ -26,7 +26,7 @@ func SignUp(c *gin.Context) {
 				infrastructure.ConnectDb(),
 			),
 		),
-		middleware.NewAuth(),
+		middleware.NewAuth(repository.NewJwtBlacklistRepository(infrastructure.ConnectDb())),
 		presenter.NewSignUpPresenter(),
 	)
 	output, token, err := uc.Execute(input)
