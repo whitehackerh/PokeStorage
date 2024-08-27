@@ -1,9 +1,5 @@
 package entity
 
-import (
-	"github.com/whitehackerh/PokeStorage/src/model"
-)
-
 type (
 	User struct {
 		id           string
@@ -14,9 +10,7 @@ type (
 	}
 	IUserService interface {
 		Create(User) error
-		MapEntityToModel(User) model.User
 		FindByUsernameAndPassword(string, string) (User, error)
-		MapModelToEntity(model.User) User
 	}
 )
 

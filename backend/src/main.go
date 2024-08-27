@@ -33,6 +33,7 @@ func main() {
 		authGroup.Use(auth.ParseToken())
 		{
 			authGroup.POST("/sign-out", handler.SignOut)
+			authGroup.GET("/titles", handler.GetTitles)
 		}
 	}
 	r.Run()

@@ -11,7 +11,7 @@ func NewSignUpPresenter() usecase.SignUpPresenter {
 	return &SignUpPresenter{}
 }
 
-func (a *SignUpPresenter) Output(user entity.User) usecase.SignUpOutput {
+func (p *SignUpPresenter) Output(user entity.User) usecase.SignUpOutput {
 	return usecase.SignUpOutput{
 		Id:           user.Id(),
 		Username:     user.Username(),
