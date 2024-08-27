@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
+	"github.com/whitehackerh/PokeStorage/src/domain/service"
 )
 
 type (
@@ -22,13 +23,13 @@ type (
 		} `json:"titles"`
 	}
 	GetTitlesInteractor struct {
-		service   entity.ITitleService
+		service   service.ITitleService
 		presenter GetTitlesPresenter
 	}
 )
 
 func NewGetTitlesInteractor(
-	service entity.ITitleService,
+	service service.ITitleService,
 	presenter GetTitlesPresenter,
 ) GetTitlesUseCase {
 	return &GetTitlesInteractor{

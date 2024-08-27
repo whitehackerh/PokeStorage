@@ -10,9 +10,6 @@ type (
 		title       string
 		releaseDate time.Time
 	}
-	ITitleService interface {
-		Get() ([]Title, error)
-	}
 )
 
 func NewTitle(id int, title string, releaseDate time.Time) Title {

@@ -3,15 +3,20 @@ package repository
 import (
 	"gorm.io/gorm"
 
-	"github.com/whitehackerh/PokeStorage/src/domain/service"
 	"github.com/whitehackerh/PokeStorage/src/model"
 )
 
-type UserRepository struct {
-	Db *gorm.DB
-}
+type (
+	IUserRepository interface {
+		Create(model.User) error
+		FindByUsernameAndPassword(string, string) (model.User, error)
+	}
+	UserRepository struct {
+		Db *gorm.DB
+	}
+)
 
-func NewUserRepository(db *gorm.DB) service.IUserRepository {
+func NewUserRepository(db *gorm.DB) IUserRepository {
 	return &UserRepository{
 		Db: db,
 	}

@@ -3,18 +3,19 @@ package service
 import (
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
 	"github.com/whitehackerh/PokeStorage/src/model"
+	"github.com/whitehackerh/PokeStorage/src/repository"
 )
 
 type (
-	TitleService struct {
-		repo ITitleRepository
+	ITitleService interface {
+		Get() ([]entity.Title, error)
 	}
-	ITitleRepository interface {
-		Get() ([]model.Title, error)
+	TitleService struct {
+		repo repository.ITitleRepository
 	}
 )
 
-func NewTitleService(titleRepository ITitleRepository) entity.ITitleService {
+func NewTitleService(titleRepository repository.ITitleRepository) ITitleService {
 	return &TitleService{
 		repo: titleRepository,
 	}

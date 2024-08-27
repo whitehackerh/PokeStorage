@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/whitehackerh/PokeStorage/src/domain/entity"
+	"github.com/whitehackerh/PokeStorage/src/domain/service"
 	"github.com/whitehackerh/PokeStorage/src/middleware"
 )
 
@@ -18,14 +18,14 @@ type (
 	}
 	SignInOutput     struct{}
 	SignInInteractor struct {
-		service   entity.IUserService
+		service   service.IUserService
 		auth      middleware.IAuth
 		presenter SignInPresenter
 	}
 )
 
 func NewSignInInteractor(
-	service entity.IUserService,
+	service service.IUserService,
 	auth middleware.IAuth,
 	presenter SignInPresenter,
 ) SignInUseCase {

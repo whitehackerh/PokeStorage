@@ -3,19 +3,20 @@ package service
 import (
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
 	"github.com/whitehackerh/PokeStorage/src/model"
+	"github.com/whitehackerh/PokeStorage/src/repository"
 )
 
 type (
-	UserService struct {
-		repo IUserRepository
+	IUserService interface {
+		Create(entity.User) error
+		FindByUsernameAndPassword(string, string) (entity.User, error)
 	}
-	IUserRepository interface {
-		Create(model.User) error
-		FindByUsernameAndPassword(string, string) (model.User, error)
+	UserService struct {
+		repo repository.IUserRepository
 	}
 )
 
-func NewUserService(userRepository IUserRepository) entity.IUserService {
+func NewUserService(userRepository repository.IUserRepository) IUserService {
 	return &UserService{
 		repo: userRepository,
 	}

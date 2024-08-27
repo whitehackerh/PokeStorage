@@ -3,15 +3,19 @@ package repository
 import (
 	"gorm.io/gorm"
 
-	"github.com/whitehackerh/PokeStorage/src/domain/service"
 	"github.com/whitehackerh/PokeStorage/src/model"
 )
 
-type TitleRepository struct {
-	Db *gorm.DB
-}
+type (
+	ITitleRepository interface {
+		Get() ([]model.Title, error)
+	}
+	TitleRepository struct {
+		Db *gorm.DB
+	}
+)
 
-func NewTitleRepository(db *gorm.DB) service.ITitleRepository {
+func NewTitleRepository(db *gorm.DB) ITitleRepository {
 	return &TitleRepository{
 		Db: db,
 	}

@@ -8,10 +8,6 @@ type (
 		emailAddress string
 		name         string
 	}
-	IUserService interface {
-		Create(User) error
-		FindByUsernameAndPassword(string, string) (User, error)
-	}
 )
 
 func NewUser(
