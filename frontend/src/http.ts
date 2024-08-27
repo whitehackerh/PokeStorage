@@ -1,5 +1,6 @@
 import axios from 'axios';
-const baseUri = "http://127.0.0.1:8080/api";
+const noTokenBaseUri = "http://127.0.0.1:8080/api";
+const withTokenBaseUri = noTokenBaseUri + '/auth';
 export const requestHeaders = {
     "Content-Type": "application/json",
     "Authorization": '',
@@ -9,9 +10,13 @@ export const multipartFormData = {
     "Authorization": '',
 }
 export const noTokenRequest = axios.create({
-    baseURL:baseUri,
-    headers:{"Content-Type":"application/json"}
+    baseURL: noTokenBaseUri,
+    headers: {"Content-Type":"application/json"}
 });
 export const withTokenRequest = axios.create({
-    baseURL:baseUri,
+    baseURL: withTokenBaseUri,
 })
+export const getRequestHeaders = () => {
+    requestHeaders.Authorization = `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`;
+    return requestHeaders
+}

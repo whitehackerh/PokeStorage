@@ -22,15 +22,11 @@ func NewUserService(userRepository IUserRepository) entity.IUserService {
 }
 
 func (u *UserService) Create(user entity.User) error {
-	userModel := u.MapEntityToModel(user)
-	err := u.repo.Create(userModel)
-	if err != nil {
-		return err
-	}
-	return err
+	userModel := u.mapEntityToModel(user)
+	return u.repo.Create(userModel)
 }
 
-func (u *UserService) MapEntityToModel(user entity.User) model.User {
+func (u *UserService) mapEntityToModel(user entity.User) model.User {
 	return model.User{
 		Id:           user.Id(),
 		Username:     user.Username(),
@@ -45,10 +41,10 @@ func (u *UserService) FindByUsernameAndPassword(username string, password string
 	if err != nil {
 		return entity.User{}, err
 	}
-	return u.MapModelToEntity(userModel), err
+	return u.mapModelToEntity(userModel), err
 }
 
-func (u *UserService) MapModelToEntity(model model.User) entity.User {
+func (u *UserService) mapModelToEntity(model model.User) entity.User {
 	return entity.NewUser(
 		model.Id,
 		model.Username,

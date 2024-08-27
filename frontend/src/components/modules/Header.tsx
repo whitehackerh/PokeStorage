@@ -35,7 +35,7 @@ const Header = () => {
 
     const SignOutEvent = () => {
       requestHeaders.Authorization = `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`;
-      withTokenRequest.post('/auth/sign-out', {
+      withTokenRequest.post('/sign-out', {
       },{
         headers: requestHeaders
       }).then(() => {
