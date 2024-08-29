@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Typography, List, ListItem } from '@mui/material';
 import { getTitles } from '../../../api/Titles';
 import { Title } from '../../../entity/title';
-import './Home.css';
 
 const Home = () => {
     const [titles, setTitles] = useState<Title[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTitles = async () => {
@@ -17,20 +19,26 @@ const Home = () => {
         fetchTitles();
     }, []);
 
+    const handleItemClick = (title: Title) => {
+        navigate('/menu', { state: { title: title }});
+    }
+
     return (
         <>
-            <div className="container">
-                <h1>Select Titles</h1>
-                <ul>
+            <Container maxWidth="sm" style={{ textAlign: 'center', marginTop: '50px' }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Select Titles
+                </Typography>
+                <List>
                     {titles.map((title) => (
-                        <li key={title.id}>
-                            <a href='' style={{ fontSize: '20px' }}>
-                            {title.title}
-                            </a>
-                        </li>
+                        <ListItem onClick={() => handleItemClick(title)} key={title.id} style={{ justifyContent: 'center', backgroundColor: '#f0f0f0', margin: '10px 0', borderRadius: '8px' }}>
+                            <Typography variant="body1" style={{ fontSize: '1.5rem' }}>
+                                {title.title}
+                            </Typography>
+                        </ListItem>
                     ))}
-                </ul>
-            </div>
+                </List>
+            </Container>
         </>
     );
 };

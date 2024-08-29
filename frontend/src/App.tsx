@@ -14,6 +14,7 @@ import HomeBar from "./components/modules/HomeBar";
 import Home from "./components/pages/home/Home";
 import SignIn from "./components/pages/sign_in/SignIn";
 import SignUp from "./components/pages/sign_up/SignUp";
+import Menu from "./components/pages/menu/Menu";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
@@ -29,7 +30,7 @@ const Top = () => {
   );
 };
 
-const Menu = () => {
+const Index = () => {
   let location = useLocation();
   return (
     <>
@@ -46,10 +47,11 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Menu />}>
+          <Route path="/" element={<Index />}>
             <Route path="/home" element={<Home />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/menu" element={<Menu />} />
           </Route>
         </Routes>
       </BrowserRouter>
