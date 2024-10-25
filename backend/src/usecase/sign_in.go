@@ -1,8 +1,9 @@
 package usecase
 
 import (
-	"github.com/whitehackerh/PokeStorage/src/domain/service"
+	"github.com/whitehackerh/PokeStorage/src/converter"
 	"github.com/whitehackerh/PokeStorage/src/middleware"
+	"github.com/whitehackerh/PokeStorage/src/repository"
 )
 
 type (
@@ -18,30 +19,30 @@ type (
 	}
 	SignInOutput     struct{}
 	SignInInteractor struct {
-		service   service.IUserService
-		auth      middleware.IAuth
-		presenter SignInPresenter
+		repository repository.IUserRepository
+		auth       middleware.IAuth
+		presenter  SignInPresenter
 	}
 )
 
 func NewSignInInteractor(
-	service service.IUserService,
+	repository repository.IUserRepository,
 	auth middleware.IAuth,
 	presenter SignInPresenter,
 ) SignInUseCase {
 	return &SignInInteractor{
-		service:   service,
-		auth:      auth,
-		presenter: presenter,
+		repository: repository,
+		auth:       auth,
+		presenter:  presenter,
 	}
 }
 
 func (interactor *SignInInteractor) Execute(input SignInInput) (SignInOutput, string, error) {
-	user, err := interactor.service.FindByUsernameAndPassword(input.Username, input.Password)
+	user, err := interactor.repository.FindByUsernameAndPassword(input.Username, input.Password)
 	if err != nil {
 		return interactor.presenter.Output(), "", err
 	}
-	token, err := interactor.auth.CreateToken(user)
+	token, err := interactor.auth.CreateToken(converter.UserModelToEntity(user))
 	if err != nil {
 		return interactor.presenter.Output(), "", err
 	}

@@ -3,8 +3,9 @@ package usecase
 import (
 	"time"
 
+	"github.com/whitehackerh/PokeStorage/src/converter"
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
-	"github.com/whitehackerh/PokeStorage/src/domain/service"
+	"github.com/whitehackerh/PokeStorage/src/repository"
 )
 
 type (
@@ -23,25 +24,25 @@ type (
 		} `json:"titles"`
 	}
 	GetTitlesInteractor struct {
-		service   service.ITitleService
-		presenter GetTitlesPresenter
+		repository repository.ITitleRepository
+		presenter  GetTitlesPresenter
 	}
 )
 
 func NewGetTitlesInteractor(
-	service service.ITitleService,
+	repository repository.ITitleRepository,
 	presenter GetTitlesPresenter,
 ) GetTitlesUseCase {
 	return &GetTitlesInteractor{
-		service:   service,
-		presenter: presenter,
+		repository: repository,
+		presenter:  presenter,
 	}
 }
 
 func (interactor *GetTitlesInteractor) Execute(input GetTitlesInput) (GetTitlesOutput, error) {
-	titles, err := interactor.service.Get()
+	titles, err := interactor.repository.Get()
 	if err != nil {
 		return interactor.presenter.Output([]entity.Title{}), err
 	}
-	return interactor.presenter.Output(titles), err
+	return interactor.presenter.Output(converter.TitleModelsToEntities(titles)), err
 }

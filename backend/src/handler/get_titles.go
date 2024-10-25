@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/whitehackerh/PokeStorage/src/domain/service"
 	"github.com/whitehackerh/PokeStorage/src/infrastructure"
 	"github.com/whitehackerh/PokeStorage/src/presenter"
 	"github.com/whitehackerh/PokeStorage/src/repository"
@@ -16,10 +15,8 @@ func GetTitles(c *gin.Context) {
 	var input = usecase.GetTitlesInput{}
 
 	uc := usecase.NewGetTitlesInteractor(
-		service.NewTitleService(
-			repository.NewTitleRepository(
-				infrastructure.ConnectDb(),
-			),
+		repository.NewTitleRepository(
+			infrastructure.ConnectDb(),
 		),
 		presenter.NewGetTitlesPresenter(),
 	)

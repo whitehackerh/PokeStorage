@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/whitehackerh/PokeStorage/src/domain/service"
 	"github.com/whitehackerh/PokeStorage/src/infrastructure"
 	"github.com/whitehackerh/PokeStorage/src/middleware"
 	"github.com/whitehackerh/PokeStorage/src/presenter"
@@ -21,10 +20,8 @@ func SignIn(c *gin.Context) {
 		return
 	}
 	uc := usecase.NewSignInInteractor(
-		service.NewUserService(
-			repository.NewUserRepository(
-				infrastructure.ConnectDb(),
-			),
+		repository.NewUserRepository(
+			infrastructure.ConnectDb(),
 		),
 		middleware.NewAuth(repository.NewJwtBlacklistRepository(infrastructure.ConnectDb())),
 		presenter.NewSignInPresenter(),

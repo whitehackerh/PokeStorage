@@ -1,9 +1,10 @@
 package usecase
 
 import (
+	"github.com/whitehackerh/PokeStorage/src/converter"
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
-	"github.com/whitehackerh/PokeStorage/src/domain/service"
 	"github.com/whitehackerh/PokeStorage/src/middleware"
+	"github.com/whitehackerh/PokeStorage/src/repository"
 	"github.com/whitehackerh/PokeStorage/src/util"
 )
 
@@ -28,21 +29,21 @@ type (
 		Name         string `json:"name"`
 	}
 	SignUpInteractor struct {
-		service   service.IUserService
-		auth      middleware.IAuth
-		presenter SignUpPresenter
+		repository repository.IUserRepository
+		auth       middleware.IAuth
+		presenter  SignUpPresenter
 	}
 )
 
 func NewSignUpInteractor(
-	service service.IUserService,
+	repository repository.IUserRepository,
 	auth middleware.IAuth,
 	presenter SignUpPresenter,
 ) SignUpUseCase {
 	return &SignUpInteractor{
-		service:   service,
-		auth:      auth,
-		presenter: presenter,
+		repository: repository,
+		auth:       auth,
+		presenter:  presenter,
 	}
 }
 
@@ -54,7 +55,7 @@ func (interactor *SignUpInteractor) Execute(input SignUpInput) (SignUpOutput, st
 		input.EmailAddress,
 		input.Name,
 	)
-	err := interactor.service.Create(user)
+	err := interactor.repository.Create(converter.UserEntityToModel(user))
 	if err != nil {
 		return interactor.presenter.Output(entity.User{}), "", err
 	}
