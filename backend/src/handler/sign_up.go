@@ -12,11 +12,11 @@ import (
 )
 
 func SignUp(c *gin.Context) {
-	var api = "/sign-up"
+	var url = "/sign-up"
 	var input usecase.SignUpInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(api, err.Error()))
+		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
 		return
 	}
 	uc := usecase.NewSignUpInteractor(
@@ -28,9 +28,9 @@ func SignUp(c *gin.Context) {
 	)
 	output, token, err := uc.Execute(input)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(api, err.Error()))
+		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
 		return
 	}
 	c.Header("Authorization", "Bearer "+token)
-	c.JSON(200, presenter.NewCommonPresenter(api, output))
+	c.JSON(200, presenter.NewCommonPresenter(url, output))
 }

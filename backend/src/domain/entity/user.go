@@ -1,14 +1,12 @@
 package entity
 
-type (
-	User struct {
-		id           string
-		username     string
-		password     string
-		emailAddress string
-		name         string
-	}
-)
+type User struct {
+	id           string
+	username     string
+	password     string
+	emailAddress string
+	name         string
+}
 
 func NewUser(
 	id string,

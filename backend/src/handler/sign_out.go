@@ -12,7 +12,7 @@ import (
 )
 
 func SignOut(c *gin.Context) {
-	var api = "/sign-out"
+	var url = "/sign-out"
 	var input = usecase.SignOutInput{Token: c.MustGet("token").(string), Claims: *c.MustGet("claims").(*middleware.Claims)}
 
 	uc := usecase.NewSignOutInteractor(
@@ -21,8 +21,8 @@ func SignOut(c *gin.Context) {
 	)
 	output, err := uc.Execute(input)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(api, err.Error()))
+		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
 		return
 	}
-	c.JSON(200, presenter.NewCommonPresenter(api, output))
+	c.JSON(200, presenter.NewCommonPresenter(url, output))
 }
