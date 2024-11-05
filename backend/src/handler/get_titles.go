@@ -25,6 +25,6 @@ func GetTitles(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
 		return
 	}
-	c.JSON(200, 123)
+
 	c.JSON(200, presenter.NewCommonPresenter(url, output))
 }
