@@ -8,10 +8,7 @@ import (
 func TitleModelsToEntities(titles []model.Title) []entity.Title {
 	var entities []entity.Title
 	for _, t := range titles {
-		entities = append(
-			entities,
-			TitleModelToEntity(t),
-		)
+		entities = append(entities, TitleModelToEntity(t))
 	}
 	return entities
 }

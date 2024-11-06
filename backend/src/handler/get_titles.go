@@ -11,7 +11,7 @@ import (
 )
 
 func GetTitles(c *gin.Context) {
-	var api = "/titles"
+	var url = "/titles"
 	var input = usecase.GetTitlesInput{}
 
 	uc := usecase.NewGetTitlesInteractor(
@@ -22,8 +22,9 @@ func GetTitles(c *gin.Context) {
 	)
 	output, err := uc.Execute(input)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(api, err.Error()))
+		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
 		return
 	}
-	c.JSON(200, presenter.NewCommonPresenter(api, output))
+
+	c.JSON(200, presenter.NewCommonPresenter(url, output))
 }

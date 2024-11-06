@@ -4,13 +4,11 @@ import (
 	"time"
 )
 
-type (
-	Title struct {
-		id          int
-		title       string
-		releaseDate time.Time
-	}
-)
+type Title struct {
+	id          int
+	title       string
+	releaseDate time.Time
+}
 
 func NewTitle(id int, title string, releaseDate time.Time) Title {
 	return Title{

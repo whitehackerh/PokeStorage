@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Typography, List, ListItem } from '@mui/material';
 import { getTitles } from '../../../api/Titles';
-import { Title } from '../../../entity/title';
+import { Title } from '../../../entity/Title';
 
 const Home = () => {
     const [titles, setTitles] = useState<Title[]>([]);
