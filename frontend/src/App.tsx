@@ -15,6 +15,7 @@ import Home from "./components/pages/home/Home";
 import SignIn from "./components/pages/sign_in/SignIn";
 import SignUp from "./components/pages/sign_up/SignUp";
 import Menu from "./components/pages/menu/Menu";
+import RegisterPokemon from "./components/pages/register_pokemon/RegisterPokemon";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
@@ -52,6 +53,7 @@ function App() {
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/register-pokemon" element={<RegisterPokemon />} />
           </Route>
         </Routes>
       </BrowserRouter>

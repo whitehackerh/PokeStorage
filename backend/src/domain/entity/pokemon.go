@@ -5,7 +5,7 @@ type Pokemon struct {
 	nationalPokedexNo int
 	formeNo           int
 	name              string
-	formeName         string
+	formeName         *string
 	types             []Type
 	abilities         []Ability
 	baseStats         BaseStats
@@ -17,7 +17,7 @@ func NewPokemon(
 	nationalPokedexNo int,
 	formeNo int,
 	name string,
-	formeName string,
+	formeName *string,
 	types []Type,
 	abilities []Ability,
 	baseStats BaseStats,
@@ -52,7 +52,7 @@ func (p *Pokemon) Name() string {
 	return p.name
 }
 
-func (p *Pokemon) FormeName() string {
+func (p *Pokemon) FormeName() *string {
 	return p.formeName
 }
 
