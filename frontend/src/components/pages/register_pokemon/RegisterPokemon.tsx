@@ -105,69 +105,97 @@ const RegisterPokemon = () => {
         return <div>Loading...</div>;
     }
 
+    const styles: {
+        container: React.CSSProperties;
+        iconContainer: React.CSSProperties;
+        icon: React.CSSProperties;
+        autocomplete: React.CSSProperties;
+    } = {
+        container: {
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+        },
+        iconContainer: {
+            display: "flex",
+            alignItems: "center",
+        },
+        icon: {
+            height: "40px",
+            marginRight: "8px",
+        },
+        autocomplete: {
+            marginTop: "16px",
+            width: "400px"
+        },
+    };
+
     return (
         <>
-            <Autocomplete
-                id="pokemon"
-                options={pokemons}
-                getOptionLabel={(option) =>
-                    option.formeName ? `${option.name} (${option.formeName})` : option.name
-                }
-                onChange={handlePokemonChange}
-                renderInput={(params) => (
-                    <TextField {...params} label="Pokemon" variant="outlined" />
-                )}
-            />
-            {selectedPokemon && (
-                <Box mt={2}>
-                    <Box display="flex" alignItems="center">
-                        {selectedPokemon.types.map((type, index) => (
-                            <img
-                                key={index}
-                                src={typeIcons[type.name.toLowerCase()]}
-                                alt={type.name}
-                                style={{ height: '40px', marginRight: '8px' }}
-                            />
-                        ))}
-                    </Box>
-                </Box>
-            )}
-            <Autocomplete
-                id="abilities"
-                options={abilitiesOptions}
-                value={selectedAbility}
-                getOptionLabel={(option) => option.name}
-                onChange={handleAbilityChange}
-                renderInput={(params) => (
-                    <TextField {...params} label="Ability" variant="outlined" />
-                )}
-                style={{ marginTop: '16px' }}
-            />
-            {toggleTeraType && (
-                <Autocomplete
-                    id="teraType"
-                    options={teraTypes}
-                    value={selectedTeraType}
-                    getOptionLabel={(option) => option.name}
-                    onChange={handleTeraTypeChange}
-                    renderInput={(params) => (
-                        <TextField {...params} label="Tera Type" variant="outlined" />
+            <div style={{"margin": '40px'}}>
+                <Box style={styles.container}>
+                    <Autocomplete
+                        id="pokemon"
+                        options={pokemons}
+                        getOptionLabel={(option) =>
+                            option.formeName ? `${option.name} (${option.formeName})` : option.name
+                        }
+                        onChange={handlePokemonChange}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Pokemon" variant="outlined" />
+                        )}
+                        style={{'width': '400px'}}
+                    />
+                    {selectedPokemon && (
+                        <Box style={styles.iconContainer}>
+                            {selectedPokemon.types.map((type, index) => (
+                                <img
+                                    key={index}
+                                    src={typeIcons[type.name.toLowerCase()]}
+                                    alt={type.name}
+                                    style={styles.icon}
+                                />
+                            ))}
+                        </Box>
                     )}
-                    style={{ marginTop: '16px' }}
+                </Box>
+                <Autocomplete
+                    id="abilities"
+                    options={abilitiesOptions}
+                    value={selectedAbility}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleAbilityChange}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Ability" variant="outlined" />
+                    )}
+                    style={styles.autocomplete}
                 />
-            )}
-            <Autocomplete
-                id="items"
-                options={items}
-                value={selectedItem}
-                getOptionLabel={(option) => option.name}
-                onChange={handleItemChange}
-                renderInput={(params) => (
-                    <TextField {...params} label="Item" variant="outlined" />
+                {toggleTeraType && (
+                    <Autocomplete
+                        id="teraType"
+                        options={teraTypes}
+                        value={selectedTeraType}
+                        getOptionLabel={(option) => option.name}
+                        onChange={handleTeraTypeChange}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Tera Type" variant="outlined" />
+                        )}
+                        style={styles.autocomplete}
+                    />
                 )}
-                disabled={selectedPokemon?.presetHeldItem !== null}
-                style={{ marginTop: '16px' }}
-            />
+                <Autocomplete
+                    id="items"
+                    options={items}
+                    value={selectedItem}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleItemChange}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Item" variant="outlined" />
+                    )}
+                    disabled={selectedPokemon?.presetHeldItem !== null}
+                    style={styles.autocomplete}
+                />
+            </div>
         </>
     );
 };
