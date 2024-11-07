@@ -8,6 +8,7 @@ import { Title } from '../../../entity/Title';
 import { Pokemon } from '../../../entity/Pokemon';
 import { Ability } from '../../../entity/Ability';
 import { TeraType } from '../../../entity/TeraType';
+import { TitleEnum } from '../../../enum/Title';
 import electricIcon from '../../../assets/img/type/electric.png';
 import fairyIcon from '../../../assets/img/type/fairy.png';
 import steelIcon from '../../../assets/img/type/steel.png';
@@ -27,6 +28,7 @@ const RegisterPokemon = () => {
     const [teraTypes, setTeraTypes] = useState<TeraType[]>([]);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
     const [selectedAbility, setSelectedAbility] = useState<Ability | null>(null);
+    const [toggleTeraType, setToggleTeraType] = useState<boolean>(false);
     const [selectedTeraType, setSelectedTeraType] = useState<TeraType | null>(null);
     const [abilitiesOptions, setAbilitiesOptions] = useState<Ability[]>([]);
     const navigate = useNavigate();
@@ -34,6 +36,7 @@ const RegisterPokemon = () => {
     useEffect(() => {
         if (location.state && location.state.title) {
             setTitle(location.state.title);
+            setToggleTeraType(location.state.title.id == TitleEnum.SV);
         }
     }, [location.state]);
 
@@ -58,8 +61,10 @@ const RegisterPokemon = () => {
                 console.error(error);
             }
         }
-        fetchTeraTypes();
-    }, []);
+        if (title != null && toggleTeraType) {
+            fetchTeraTypes();
+        }
+    }, [title]);
 
     useEffect(() => {
         if (selectedPokemon) {
@@ -124,17 +129,19 @@ const RegisterPokemon = () => {
                 )}
                 style={{ marginTop: '16px' }}
             />
-            <Autocomplete
-                id="abilities"
-                options={teraTypes}
-                value={selectedTeraType}
-                getOptionLabel={(option) => option.name}
-                onChange={handleTeraTypeChange}
-                renderInput={(params) => (
-                    <TextField {...params} label="TeraType" variant="outlined" />
-                )}
-                style={{ marginTop: '16px' }}
-            />
+            {toggleTeraType && (
+                <Autocomplete
+                    id="abilities"
+                    options={teraTypes}
+                    value={selectedTeraType}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleTeraTypeChange}
+                    renderInput={(params) => (
+                        <TextField {...params} label="TeraType" variant="outlined" />
+                    )}
+                    style={{ marginTop: '16px' }}
+                />
+            )}
         </>
     );
 };
