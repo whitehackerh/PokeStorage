@@ -1,4 +1,4 @@
-package response_component
+package api_schema
 
 type BaseStats struct {
 	Id             int     `json:"id"`

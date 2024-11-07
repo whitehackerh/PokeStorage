@@ -1,10 +1,10 @@
 package usecase
 
 import (
+	"github.com/whitehackerh/PokeStorage/src/api_schema"
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
 	"github.com/whitehackerh/PokeStorage/src/domain/service"
 	"github.com/whitehackerh/PokeStorage/src/repository"
-	"github.com/whitehackerh/PokeStorage/src/response_component"
 )
 
 type (
@@ -16,7 +16,7 @@ type (
 		Output([]entity.Pokemon) GetPokemonsOutput
 	}
 	GetPokemonsOutput struct {
-		Pokemons []response_component.Pokemon `json:"pokemons"`
+		Pokemons []api_schema.Pokemon `json:"pokemons"`
 	}
 	GetSwShPokemonsInteractor struct {
 		repository repository.ISwShPokemonRepository

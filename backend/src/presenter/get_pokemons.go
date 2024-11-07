@@ -1,8 +1,8 @@
 package presenter
 
 import (
+	"github.com/whitehackerh/PokeStorage/src/api_schema"
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
-	"github.com/whitehackerh/PokeStorage/src/response_component"
 	"github.com/whitehackerh/PokeStorage/src/usecase"
 )
 
@@ -14,27 +14,27 @@ func NewGetPokemonsPresenter() usecase.GetPokemonsPresenter {
 
 func (p *GetPokemonsPresenter) Output(pokemons []entity.Pokemon) usecase.GetPokemonsOutput {
 	output := usecase.GetPokemonsOutput{
-		Pokemons: make([]response_component.Pokemon, len(pokemons)),
+		Pokemons: make([]api_schema.Pokemon, len(pokemons)),
 	}
 	for i, pokemon := range pokemons {
-		types := make([]response_component.Type, len(pokemon.Types()))
+		types := make([]api_schema.Type, len(pokemon.Types()))
 		for j, typeEntity := range pokemon.Types() {
-			types[j] = response_component.Type{
+			types[j] = api_schema.Type{
 				Id:   typeEntity.Id(),
 				Name: typeEntity.Name(),
 			}
 		}
 
-		abilities := make([]response_component.Ability, len(pokemon.Abilities()))
+		abilities := make([]api_schema.Ability, len(pokemon.Abilities()))
 		for j, ability := range pokemon.Abilities() {
-			abilities[j] = response_component.Ability{
+			abilities[j] = api_schema.Ability{
 				Id:   ability.Id(),
 				Name: ability.Name(),
 			}
 		}
 
 		baseStats := pokemon.BaseStats()
-		baseStatsResponse := response_component.BaseStats{
+		baseStatsResponse := api_schema.BaseStats{
 			Id:             baseStats.Id(),
 			HitPoints:      baseStats.HitPoints(),
 			Attack:         baseStats.Attack(),
@@ -47,17 +47,17 @@ func (p *GetPokemonsPresenter) Output(pokemons []entity.Pokemon) usecase.GetPoke
 		}
 
 		presetHeldItem := pokemon.PresetHeldItem()
-		var presetHeldItemResponse *response_component.Item
+		var presetHeldItemResponse *api_schema.Item
 		if presetHeldItem == nil {
 			presetHeldItemResponse = nil
 		} else {
-			presetHeldItemResponse = &response_component.Item{
+			presetHeldItemResponse = &api_schema.Item{
 				Id:   presetHeldItem.Id(),
 				Name: presetHeldItem.Name(),
 			}
 		}
 
-		output.Pokemons[i] = response_component.Pokemon{
+		output.Pokemons[i] = api_schema.Pokemon{
 			Id:                pokemon.Id(),
 			NationalPokedexNo: pokemon.NationalPokedexNo(),
 			FormeNo:           pokemon.FormeNo(),

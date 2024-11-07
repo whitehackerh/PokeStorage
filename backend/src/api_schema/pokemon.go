@@ -1,4 +1,4 @@
-package response_component
+package api_schema
 
 type Pokemon struct {
 	Id                int       `json:"id"`

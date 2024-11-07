@@ -1,8 +1,8 @@
 package presenter
 
 import (
+	"github.com/whitehackerh/PokeStorage/src/api_schema"
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
-	"github.com/whitehackerh/PokeStorage/src/response_component"
 	"github.com/whitehackerh/PokeStorage/src/usecase"
 )
 
@@ -14,10 +14,10 @@ func NewGetItemsPresenter() usecase.GetItemsPresenter {
 
 func (p *GetItemsPresenter) Output(Items []entity.Item) usecase.GetItemsOutput {
 	output := usecase.GetItemsOutput{
-		Items: []response_component.Item{},
+		Items: []api_schema.Item{},
 	}
 	for _, item := range Items {
-		output.Items = append(output.Items, response_component.Item{
+		output.Items = append(output.Items, api_schema.Item{
 			Id:   item.Id(),
 			Name: item.Name(),
 		})

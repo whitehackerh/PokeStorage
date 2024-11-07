@@ -1,6 +1,6 @@
-package response_component
+package api_schema
 
-type Item struct {
+type TeraType struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
 }

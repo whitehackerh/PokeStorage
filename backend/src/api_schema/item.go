@@ -1,6 +1,6 @@
-package response_component
+package api_schema
 
-type Ability struct {
+type Item struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
 }

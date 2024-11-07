@@ -1,10 +1,10 @@
 package usecase
 
 import (
+	"github.com/whitehackerh/PokeStorage/src/api_schema"
 	"github.com/whitehackerh/PokeStorage/src/converter"
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
 	"github.com/whitehackerh/PokeStorage/src/repository"
-	"github.com/whitehackerh/PokeStorage/src/response_component"
 )
 
 type (
@@ -16,7 +16,7 @@ type (
 		Output([]entity.Item) GetItemsOutput
 	}
 	GetItemsOutput struct {
-		Items []response_component.Item `json:"items"`
+		Items []api_schema.Item `json:"items"`
 	}
 	GetSwShItemsInteractor struct {
 		repository repository.ISwShItemRepository

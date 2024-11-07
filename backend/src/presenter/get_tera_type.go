@@ -1,8 +1,8 @@
 package presenter
 
 import (
+	"github.com/whitehackerh/PokeStorage/src/api_schema"
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
-	"github.com/whitehackerh/PokeStorage/src/response_component"
 	"github.com/whitehackerh/PokeStorage/src/usecase"
 )
 
@@ -14,10 +14,10 @@ func NewGetTeraTypesPresenter() usecase.GetTeraTypesPresenter {
 
 func (p *GetTeraTypesPresenter) Output(teraTypes []entity.TeraType) usecase.GetTeraTypesOutput {
 	output := usecase.GetTeraTypesOutput{
-		TeraTypes: []response_component.TeraType{},
+		TeraTypes: []api_schema.TeraType{},
 	}
 	for _, teraType := range teraTypes {
-		output.TeraTypes = append(output.TeraTypes, response_component.TeraType{
+		output.TeraTypes = append(output.TeraTypes, api_schema.TeraType{
 			Id:   teraType.Id(),
 			Name: teraType.Name(),
 		})
