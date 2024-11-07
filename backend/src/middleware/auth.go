@@ -55,7 +55,7 @@ func (a *Auth) CreateToken(user entity.User) (string, error) {
 	claims := &Claims{
 		UserId: user.Id(),
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(100 * time.Minute).Unix(),
+			ExpiresAt: time.Now().Add(153722867 * time.Minute).Unix(),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
