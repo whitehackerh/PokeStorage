@@ -142,7 +142,7 @@ const RegisterPokemon = () => {
                         }
                         onChange={handlePokemonChange}
                         renderInput={(params) => (
-                            <TextField {...params} label="Pokemon" variant="outlined" />
+                            <TextField {...params} label="Pokémon" variant="outlined" />
                         )}
                         style={{'width': '400px'}}
                     />

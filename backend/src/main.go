@@ -36,7 +36,7 @@ func main() {
 			authGroup.GET("/titles", handler.GetTitles)
 			authGroup.GET("/pokemons/:title-id", handler.GetPokemons)
 			authGroup.GET("/tera-types", handler.GetTeraTypes)
-			// natures
+			authGroup.GET("/natures", handler.GetNatures)
 			authGroup.GET("/items/:title-id", handler.GetItems)
 			// /moves
 		}
