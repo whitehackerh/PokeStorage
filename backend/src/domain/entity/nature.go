@@ -15,10 +15,10 @@ func NewNature(
 	}
 }
 
-func (t *Nature) Id() int {
-	return t.id
+func (n *Nature) Id() int {
+	return n.id
 }
 
-func (t *Nature) Name() string {
-	return t.name
+func (n *Nature) Name() string {
+	return n.name
 }
