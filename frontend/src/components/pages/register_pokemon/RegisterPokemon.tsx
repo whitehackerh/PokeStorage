@@ -5,10 +5,12 @@ import { TextField, Box } from '@mui/material';
 import { getItems } from '../../../api/Items';
 import { getPokemons } from '../../../api/Pokemons';
 import { getTeraTypes } from '../../../api/TeraTypes';
+import { getNatures } from '../../../api/Natures';
 import { Title } from '../../../entity/Title';
 import { Pokemon } from '../../../entity/Pokemon';
 import { Ability } from '../../../entity/Ability';
 import { Item } from '../../../entity/Item';
+import { Nature } from '../../../entity/Nature';
 import { TeraType } from '../../../entity/TeraType';
 import { TitleEnum } from '../../../enum/Title';
 import electricIcon from '../../../assets/img/type/electric.png';
@@ -28,12 +30,14 @@ const RegisterPokemon = () => {
     const [title, setTitle] = useState<Title | null>(null);
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [teraTypes, setTeraTypes] = useState<TeraType[]>([]);
+    const [natures, setNatures] = useState<Nature[]>([]);
     const [items, setItems] = useState<Item[]>([]);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
     const [selectedAbility, setSelectedAbility] = useState<Ability | null>(null);
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
     const [toggleTeraType, setToggleTeraType] = useState<boolean>(false);
     const [selectedTeraType, setSelectedTeraType] = useState<TeraType | null>(null);
+    const [selectedNature, setSelectedNature] = useState<Nature | null>(null);
     const [abilitiesOptions, setAbilitiesOptions] = useState<Ability[]>([]);
     const navigate = useNavigate();
 
@@ -48,6 +52,7 @@ const RegisterPokemon = () => {
         const fetch = async (title: Title) => {
             try {
                 setPokemons(await getPokemons(title.id));
+                setNatures(await getNatures());
                 setItems(await getItems(title.id));
             } catch (error) {
                 console.error(error);
@@ -97,6 +102,10 @@ const RegisterPokemon = () => {
         setSelectedTeraType(value);
     };
 
+    const handleNatureChange = (_: any, value: Nature | null) => {
+        setSelectedNature(value);
+    }
+
     const handleItemChange = (_: any, value: Ability | null) => {
         setSelectedItem(value);
     };
@@ -142,7 +151,7 @@ const RegisterPokemon = () => {
                         }
                         onChange={handlePokemonChange}
                         renderInput={(params) => (
-                            <TextField {...params} label="Pokemon" variant="outlined" />
+                            <TextField {...params} label="Pokémon" variant="outlined" />
                         )}
                         style={{'width': '400px'}}
                     />
@@ -184,6 +193,17 @@ const RegisterPokemon = () => {
                     />
                 )}
                 <Autocomplete
+                    id="natures"
+                    options={natures}
+                    value={selectedNature}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleNatureChange}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Nature" variant="outlined" />
+                    )}
+                    style={styles.autocomplete}
+                />
+                <Autocomplete
                     id="items"
                     options={items}
                     value={selectedItem}
@@ -192,7 +212,7 @@ const RegisterPokemon = () => {
                     renderInput={(params) => (
                         <TextField {...params} label="Item" variant="outlined" />
                     )}
-                    disabled={selectedPokemon?.presetHeldItem !== null}
+                    disabled={selectedPokemon !== null && selectedPokemon.presetHeldItem !== null}
                     style={styles.autocomplete}
                 />
             </div>
