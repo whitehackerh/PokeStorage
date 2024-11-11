@@ -3,27 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { TextField, Box } from '@mui/material';
 import { getItems } from '../../../api/Items';
+import { getMoves } from '../../../api/Moves';
 import { getPokemons } from '../../../api/Pokemons';
 import { getTeraTypes } from '../../../api/TeraTypes';
 import { getNatures } from '../../../api/Natures';
 import { Title } from '../../../entity/Title';
 import { Pokemon } from '../../../entity/Pokemon';
 import { Ability } from '../../../entity/Ability';
+import { Move } from '../../../entity/Move';
 import { Item } from '../../../entity/Item';
 import { Nature } from '../../../entity/Nature';
 import { TeraType } from '../../../entity/TeraType';
 import { TitleEnum } from '../../../enum/Title';
-import electricIcon from '../../../assets/img/type/electric.png';
-import fairyIcon from '../../../assets/img/type/fairy.png';
-import steelIcon from '../../../assets/img/type/steel.png';
+import { typeIcons } from '../../Icons/type';
+import { moveCategoryIcons } from '../../Icons/move_category';
 import Autocomplete from '@mui/material/Autocomplete';
-
-
-const typeIcons: Record<string, string> = {
-    electric: electricIcon,
-    fairy: fairyIcon,
-    steel: steelIcon,
-};
 
 const RegisterPokemon = () => {
     const location = useLocation();
@@ -32,9 +26,11 @@ const RegisterPokemon = () => {
     const [teraTypes, setTeraTypes] = useState<TeraType[]>([]);
     const [natures, setNatures] = useState<Nature[]>([]);
     const [items, setItems] = useState<Item[]>([]);
+    const [moves, setMoves] = useState<Move[]>([]);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
     const [selectedAbility, setSelectedAbility] = useState<Ability | null>(null);
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+    const [selectedMoves, setSelectedMoves] = useState<(Move | null)[]>([null, null, null, null]);
     const [toggleTeraType, setToggleTeraType] = useState<boolean>(false);
     const [selectedTeraType, setSelectedTeraType] = useState<TeraType | null>(null);
     const [selectedNature, setSelectedNature] = useState<Nature | null>(null);
@@ -54,6 +50,7 @@ const RegisterPokemon = () => {
                 setPokemons(await getPokemons(title.id));
                 setNatures(await getNatures());
                 setItems(await getItems(title.id));
+                setMoves(await getMoves(title.id));
             } catch (error) {
                 console.error(error);
             }
@@ -110,6 +107,12 @@ const RegisterPokemon = () => {
         setSelectedItem(value);
     };
 
+    const handleMoveChange = (index: number) => (_: any, value: Move | null) => {
+        const newSelectedMoves = [...selectedMoves];
+        newSelectedMoves[index] = value;
+        setSelectedMoves(newSelectedMoves);
+    };
+
     if (!title) {
         return <div>Loading...</div>;
     }
@@ -131,6 +134,7 @@ const RegisterPokemon = () => {
         },
         icon: {
             height: "40px",
+            width: "200px",
             marginRight: "8px",
         },
         autocomplete: {
@@ -215,6 +219,37 @@ const RegisterPokemon = () => {
                     disabled={selectedPokemon !== null && selectedPokemon.presetHeldItem !== null}
                     style={styles.autocomplete}
                 />
+                <br />
+                {selectedMoves.map((_, index) => (
+                    <Box key={index} style={styles.container}>
+                        <Autocomplete
+                            options={moves}
+                            getOptionLabel={(option) => option.name}
+                            value={selectedMoves[index]}
+                            onChange={handleMoveChange(index)}
+                            renderInput={(params) => (
+                                <TextField {...params} label={`Move ${index + 1}`} variant="outlined" />
+                            )}
+                            style={{ width: '400px', marginBottom: '20px' }}
+                        />
+                        {selectedMoves[index]?.type && (
+                            <Box style={styles.iconContainer}>
+                                <img
+                                    src={typeIcons[selectedMoves[index]?.type?.name.toLowerCase() || '']}
+                                    alt={selectedMoves[index]?.type?.name || ''}
+                                    style={styles.icon}
+                                />
+                                <img
+                                    src={moveCategoryIcons[selectedMoves[index]?.moveCategory?.name.toLowerCase() || '']}
+                                    alt={selectedMoves[index]?.moveCategory?.name || ''}
+                                    style={{ height: '40x', width: '40px', objectFit: 'contain', marginRight: '30px' }}
+                                />
+                                <h3 style={{ marginRight: '30px' }}>Power: {selectedMoves[index]?.power ? selectedMoves[index]?.power : '---'}</h3>
+                                <h3>Accuracy: {selectedMoves[index]?.accuracy ? selectedMoves[index]?.accuracy : '---'}</h3>
+                            </Box>
+                        )}
+                    </Box>
+                ))}
             </div>
         </>
     );
