@@ -38,7 +38,7 @@ func main() {
 			authGroup.GET("/tera-types", handler.GetTeraTypes)
 			authGroup.GET("/natures", handler.GetNatures)
 			authGroup.GET("/items/:title-id", handler.GetItems)
-			// /moves
+			authGroup.GET("/moves/:title-id", handler.GetMoves)
 		}
 	}
 	r.Run()

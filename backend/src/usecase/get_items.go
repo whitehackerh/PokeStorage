@@ -49,17 +49,17 @@ func NewSVGetItemsInteractor(
 }
 
 func (interactor *GetSwShItemsInteractor) Execute(input GetItemsInput) (GetItemsOutput, error) {
-	Items, err := interactor.repository.Fetch()
+	items, err := interactor.repository.Fetch()
 	if err != nil {
 		return interactor.presenter.Output([]entity.Item{}), err
 	}
-	return interactor.presenter.Output(converter.SwShItemModelsToEntities(Items)), err
+	return interactor.presenter.Output(converter.SwShItemModelsToEntities(items)), err
 }
 
 func (interactor *GetSVItemsInteractor) Execute(input GetItemsInput) (GetItemsOutput, error) {
-	Items, err := interactor.repository.Fetch()
+	items, err := interactor.repository.Fetch()
 	if err != nil {
 		return interactor.presenter.Output([]entity.Item{}), err
 	}
-	return interactor.presenter.Output(converter.SVItemModelsToEntities(Items)), err
+	return interactor.presenter.Output(converter.SVItemModelsToEntities(items)), err
 }
