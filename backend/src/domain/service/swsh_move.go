@@ -22,7 +22,6 @@ func (s *SwShMoveService) Make(moves []model.SwShMoveRelation) []entity.Move {
 		moveType := entity.NewType(
 			move.Type.Id,
 			move.Type.Name,
-			move.Type.FirstAppearanceTitleId,
 		)
 
 		moveCategory := entity.NewMoveCategory(

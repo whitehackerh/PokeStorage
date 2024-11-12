@@ -22,7 +22,6 @@ func (s *SVMoveService) Make(moves []model.SVMoveRelation) []entity.Move {
 		moveType := entity.NewType(
 			move.Type.Id,
 			move.Type.Name,
-			move.Type.FirstAppearanceTitleId,
 		)
 
 		moveCategory := entity.NewMoveCategory(
