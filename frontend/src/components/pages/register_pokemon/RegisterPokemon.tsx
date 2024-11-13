@@ -5,10 +5,12 @@ import { TextField, Box } from '@mui/material';
 import { getItems } from '../../../api/Items';
 import { getMoves } from '../../../api/Moves';
 import { getPokemons } from '../../../api/Pokemons';
+import { getGenders } from '../../../api/Genders';
 import { getTeraTypes } from '../../../api/TeraTypes';
 import { getNatures } from '../../../api/Natures';
 import { Title } from '../../../entity/Title';
 import { Pokemon } from '../../../entity/Pokemon';
+import { Gender } from '../../../entity/Gender';
 import { Ability } from '../../../entity/Ability';
 import { Move } from '../../../entity/Move';
 import { Item } from '../../../entity/Item';
@@ -23,11 +25,13 @@ const RegisterPokemon = () => {
     const location = useLocation();
     const [title, setTitle] = useState<Title | null>(null);
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+    const [genders, setGenders] = useState<Gender[]>([]);
     const [teraTypes, setTeraTypes] = useState<TeraType[]>([]);
     const [natures, setNatures] = useState<Nature[]>([]);
     const [items, setItems] = useState<Item[]>([]);
     const [moves, setMoves] = useState<Move[]>([]);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
+    const [selectedGender, setSelectedGender] = useState<Gender | null>(null);
     const [selectedAbility, setSelectedAbility] = useState<Ability | null>(null);
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
     const [selectedMoves, setSelectedMoves] = useState<(Move | null)[]>([null, null, null, null]);
@@ -48,6 +52,7 @@ const RegisterPokemon = () => {
         const fetch = async (title: Title) => {
             try {
                 setPokemons(await getPokemons(title.id));
+                setGenders(await getGenders());
                 setNatures(await getNatures());
                 setItems(await getItems(title.id));
                 setMoves(await getMoves(title.id));
@@ -89,6 +94,10 @@ const RegisterPokemon = () => {
         } else {
 
         }
+    };
+
+    const handleGenderChange = (_: any, value: Gender | null) => {
+        setSelectedGender(value);
     };
 
     const handleAbilityChange = (_: any, value: Ability | null) => {
@@ -172,6 +181,17 @@ const RegisterPokemon = () => {
                         </Box>
                     )}
                 </Box>
+                <Autocomplete
+                    id="genders"
+                    options={genders}
+                    value={selectedGender}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleGenderChange}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Gender" variant="outlined" />
+                    )}
+                    style={styles.autocomplete}
+                />
                 <Autocomplete
                     id="abilities"
                     options={abilitiesOptions}
