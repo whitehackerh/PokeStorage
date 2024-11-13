@@ -59,7 +59,7 @@ func (interactor *GetSwShPokemonsInteractor) Execute(input GetPokemonsInput) (Ge
 	if err != nil {
 		return interactor.presenter.Output([]entity.Pokemon{}), err
 	}
-	return interactor.presenter.Output(interactor.service.Make(pokemons)), err
+	return interactor.presenter.Output(interactor.service.MakeEntitiesFromModels(pokemons)), err
 }
 
 func (interactor *GetSVPokemonsInteractor) Execute(input GetPokemonsInput) (GetPokemonsOutput, error) {
@@ -67,5 +67,5 @@ func (interactor *GetSVPokemonsInteractor) Execute(input GetPokemonsInput) (GetP
 	if err != nil {
 		return interactor.presenter.Output([]entity.Pokemon{}), err
 	}
-	return interactor.presenter.Output(interactor.service.Make(pokemons)), err
+	return interactor.presenter.Output(interactor.service.MakeEntitiesFromModels(pokemons)), err
 }

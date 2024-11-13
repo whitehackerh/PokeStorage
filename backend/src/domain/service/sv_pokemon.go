@@ -7,7 +7,7 @@ import (
 
 type (
 	ISVPokemonService interface {
-		Make([]model.SVPokemonRelation) []entity.Pokemon
+		MakeEntitiesFromModels([]model.SVPokemonRelation) []entity.Pokemon
 	}
 	SVPokemonService struct{}
 )
@@ -16,7 +16,7 @@ func NewSVPokemonService() ISVPokemonService {
 	return &SVPokemonService{}
 }
 
-func (s *SVPokemonService) Make(pokemons []model.SVPokemonRelation) []entity.Pokemon {
+func (s *SVPokemonService) MakeEntitiesFromModels(pokemons []model.SVPokemonRelation) []entity.Pokemon {
 	var result []entity.Pokemon
 	for _, pokemon := range pokemons {
 		var types []entity.Type
