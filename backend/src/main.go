@@ -39,6 +39,7 @@ func main() {
 			authGroup.GET("/natures", handler.GetNatures)
 			authGroup.GET("/items/:title-id", handler.GetItems)
 			authGroup.GET("/moves/:title-id", handler.GetMoves)
+			authGroup.GET("/genders", handler.GetGenders)
 		}
 	}
 	r.Run()
