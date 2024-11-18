@@ -7,7 +7,7 @@ import (
 
 type (
 	ISVBredPokemonService interface {
-		MakeEntityFromApiSchema(api_schema.SVBredPokemon) entity.SVBredPokemon
+		MakeEntityFromApiSchema(api_schema.SVBredPokemon, string) entity.SVBredPokemon
 	}
 	SVBredPokemonService struct {
 		bredPokemonService IBredPokemonService
@@ -20,9 +20,9 @@ func NewSVBredPokemonService(bredPokemonService IBredPokemonService) ISVBredPoke
 	}
 }
 
-func (s *SVBredPokemonService) MakeEntityFromApiSchema(schema api_schema.SVBredPokemon) entity.SVBredPokemon {
+func (s *SVBredPokemonService) MakeEntityFromApiSchema(schema api_schema.SVBredPokemon, userId string) entity.SVBredPokemon {
 	return entity.NewSVBredPokemon(
-		s.bredPokemonService.MakeEntityFromApiSchema(schema.BredPokemon),
+		s.bredPokemonService.MakeEntityFromApiSchema(schema.BredPokemon, userId),
 		entity.NewTeraType(
 			schema.TeraType.Id,
 			schema.TeraType.Name,

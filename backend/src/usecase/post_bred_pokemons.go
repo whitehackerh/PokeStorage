@@ -10,10 +10,10 @@ import (
 
 type (
 	PostSwShBredPokemonsUseCase interface {
-		Execute(input PostSwShBredPokemonsInput, tx *gorm.DB) (PostBredPokemonsOutput, error)
+		Execute(input PostSwShBredPokemonsInput, userId string, tx *gorm.DB) (PostBredPokemonsOutput, error)
 	}
 	PostSVBredPokemonsUseCase interface {
-		Execute(input PostSVBredPokemonsInput, tx *gorm.DB) (PostBredPokemonsOutput, error)
+		Execute(input PostSVBredPokemonsInput, userId string, tx *gorm.DB) (PostBredPokemonsOutput, error)
 	}
 	PostSwShBredPokemonsInput struct {
 		BredPokemon api_schema.SwShBredPokemon `json:"bred_pokemon"`
@@ -79,8 +79,8 @@ func NewPostSVBredPokemonsInteractor(
 	}
 }
 
-func (interactor *PostSwShBredPokemonsInteractor) Execute(input PostSwShBredPokemonsInput, tx *gorm.DB) (PostBredPokemonsOutput, error) {
-	bredPokemon := interactor.service.MakeEntityFromApiSchema(input.BredPokemon)
+func (interactor *PostSwShBredPokemonsInteractor) Execute(input PostSwShBredPokemonsInput, userId string, tx *gorm.DB) (PostBredPokemonsOutput, error) {
+	bredPokemon := interactor.service.MakeEntityFromApiSchema(input.BredPokemon, userId)
 
 	if err := interactor.bredRepo.Create(
 		tx,
@@ -110,8 +110,8 @@ func (interactor *PostSwShBredPokemonsInteractor) Execute(input PostSwShBredPoke
 	return interactor.presenter.Output(), nil
 }
 
-func (interactor *PostSVBredPokemonsInteractor) Execute(input PostSVBredPokemonsInput, tx *gorm.DB) (PostBredPokemonsOutput, error) {
-	bredPokemon := interactor.service.MakeEntityFromApiSchema(input.BredPokemon)
+func (interactor *PostSVBredPokemonsInteractor) Execute(input PostSVBredPokemonsInput, userId string, tx *gorm.DB) (PostBredPokemonsOutput, error) {
+	bredPokemon := interactor.service.MakeEntityFromApiSchema(input.BredPokemon, userId)
 
 	if err := interactor.bredRepo.Create(
 		tx,

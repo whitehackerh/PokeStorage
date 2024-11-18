@@ -7,7 +7,7 @@ import (
 
 type (
 	ISwShBredPokemonService interface {
-		MakeEntityFromApiSchema(api_schema.SwShBredPokemon) entity.SwShBredPokemon
+		MakeEntityFromApiSchema(api_schema.SwShBredPokemon, string) entity.SwShBredPokemon
 	}
 	SwShBredPokemonService struct {
 		bredPokemonService IBredPokemonService
@@ -20,9 +20,9 @@ func NewSwShBredPokemonService(bredPokemonService IBredPokemonService) ISwShBred
 	}
 }
 
-func (s *SwShBredPokemonService) MakeEntityFromApiSchema(schema api_schema.SwShBredPokemon) entity.SwShBredPokemon {
+func (s *SwShBredPokemonService) MakeEntityFromApiSchema(schema api_schema.SwShBredPokemon, userId string) entity.SwShBredPokemon {
 	return entity.NewSwShBredPokemon(
-		s.bredPokemonService.MakeEntityFromApiSchema(schema.BredPokemon),
+		s.bredPokemonService.MakeEntityFromApiSchema(schema.BredPokemon, userId),
 		schema.IsGigantamax,
 	)
 }

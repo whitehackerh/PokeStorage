@@ -8,7 +8,7 @@ import (
 
 type (
 	IBredPokemonService interface {
-		MakeEntityFromApiSchema(api_schema.BredPokemon) entity.BredPokemon
+		MakeEntityFromApiSchema(api_schema.BredPokemon, string) entity.BredPokemon
 	}
 	BredPokemonService struct{}
 )
@@ -17,7 +17,7 @@ func NewBredPokemonService() IBredPokemonService {
 	return &BredPokemonService{}
 }
 
-func (b *BredPokemonService) MakeEntityFromApiSchema(schema api_schema.BredPokemon) entity.BredPokemon {
+func (b *BredPokemonService) MakeEntityFromApiSchema(schema api_schema.BredPokemon, userId string) entity.BredPokemon {
 	var id string
 	if schema.Id == "" {
 		id = util.NewUUID()
@@ -82,7 +82,7 @@ func (b *BredPokemonService) MakeEntityFromApiSchema(schema api_schema.BredPokem
 
 	return entity.NewBredPokemon(
 		id,
-		schema.UserId,
+		userId,
 		schema.PokemonId,
 		schema.NationalPokedexNo,
 		schema.FormeNo,

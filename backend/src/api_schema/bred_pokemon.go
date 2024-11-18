@@ -2,7 +2,6 @@ package api_schema
 
 type BredPokemon struct {
 	Id                string           `json:"id"`
-	UserId            string           `json:"user_id"`
 	PokemonId         int              `json:"pokemon_id"`
 	NationalPokedexNo int              `json:"national_pokedex_no"`
 	FormeNo           int              `json:"forme_no"`
