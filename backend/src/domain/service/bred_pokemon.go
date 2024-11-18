@@ -89,7 +89,7 @@ func (b *BredPokemonService) MakeEntityFromApiSchema(schema api_schema.BredPokem
 		schema.Name,
 		schema.FormeName,
 		entity.NewGender(schema.Gender.Id, schema.Gender.Name),
-		schema.Level,
+		50, // schema.Level,
 		types,
 		entity.NewAbility(schema.Ability.Id, schema.Ability.Name),
 		entity.NewNature(schema.Nature.Id, schema.Nature.Name),
