@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { TextField, Box } from '@mui/material';
+import { TextField, Box, Button } from '@mui/material';
 import { getItems } from '../../../api/Items';
 import { getMoves } from '../../../api/Moves';
 import { getPokemons } from '../../../api/Pokemons';
 import { getGenders } from '../../../api/Genders';
 import { getTeraTypes } from '../../../api/TeraTypes';
 import { getNatures } from '../../../api/Natures';
+import { postBredPokemons } from '../../../api/BredPokemons';
 import { Title } from '../../../entity/Title';
 import { Pokemon } from '../../../entity/Pokemon';
 import { Gender } from '../../../entity/Gender';
@@ -23,6 +24,9 @@ import { TitleEnum } from '../../../enum/Title';
 import { typeIcons } from '../../Icons/type';
 import { moveCategoryIcons } from '../../Icons/move_category';
 import Autocomplete from '@mui/material/Autocomplete';
+import { BredPokemon } from '../../../entity/BredPokemon';
+import { SVBredPokemon } from '../../../entity/SVBredPokemon';
+import { toSnakeCase } from '../../../util/convert';
 
 const RegisterPokemon = () => {
     const location = useLocation();
@@ -122,6 +126,54 @@ const RegisterPokemon = () => {
             setAbilitiesOptions([]);
         }
     }, [selectedPokemon]);
+
+    const postBredPokemon = () => {
+        try {
+            if (title) {
+                const bredPokemon = makeBredPokemon()
+                if (bredPokemon) {
+                    postBredPokemons(title.id, toSnakeCase(bredPokemon));
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const makeBredPokemon = (): any | null => {
+        if (selectedPokemon
+            && selectedGender
+            && selectedAbility
+            && selectedNature
+            && selectedItem
+            && selectedTeraType
+        ) {
+            return {
+                bredPokemon: {
+                    id: '',
+                    pokemonId: selectedPokemon.id,
+                    nationalPokedexNo: selectedPokemon.nationalPokedexNo,
+                    formeNo: selectedPokemon.formeNo,
+                    name: selectedPokemon.name,
+                    formeName: selectedPokemon.formeName,
+                    gender: selectedGender,
+                    level: level,
+                    types: selectedPokemon.types,
+                    ability: selectedAbility,
+                    nature: selectedNature,
+                    heldItem: selectedItem,
+                    baseStats: selectedPokemon.baseStats,
+                    individualValues: individualValues,
+                    basePoints: basePoints,
+                    actualValues: actualValues,
+                    moves: selectedMoves.filter((move): move is Move => move !== null),
+                    note: note,
+                    teraType: selectedTeraType,
+                },
+            }
+        }
+        return null;
+    }
 
     const handlePokemonChange = (_: any, value: Pokemon | null) => {
         setSelectedPokemon(value);
@@ -332,72 +384,61 @@ const RegisterPokemon = () => {
                         )}
                     </Box>
                 ))}
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                    <Box key={"Individual Values"}>
-                        <h3>{"Individual Values"}</h3>
-                        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                            {statFields.map((field) => (
-                                <Autocomplete
-                                    key={field}
-                                    options={Array.from({ length: 32 }, (_, i) => i + 0)}
-                                    value={individualValues[field]}
-                                    onChange={(event, newValue) => handleIndividualValuesChange(field, newValue ?? 0)}
-                                    getOptionLabel={(option) => option.toString()} 
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label={field.charAt(0).toUpperCase() + field.slice(1)}
-                                            variant="outlined"
-                                        />
-                                    )}
-                                    style={{ width: 120 }}
-                                />
-                            ))}
-                        </Box>
+                <Box key={"Individual Values"}>
+                    <h3>{"Individual Values"}</h3>
+                    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                        {statFields.map((field) => (
+                            <TextField
+                                key={field}
+                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                variant="outlined"
+                                type="number"
+                                value={individualValues[field]}
+                                onChange={(event) => 
+                                    handleIndividualValuesChange(field, Number(event.target.value) || 0)
+                                }
+                                style={{ width: 120 }}
+                                inputProps={{ min: 0, max: 31 }}
+                            />
+                        ))}
                     </Box>
-                    <Box key={"Base Points"}>
-                        <h3>{"Base Points"}</h3>
-                        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                            {statFields.map((field) => (
-                                <Autocomplete
-                                    key={field}
-                                    options={Array.from({ length: 253 }, (_, i) => i + 0)}
-                                    value={basePoints[field]}
-                                    onChange={(event, newValue) => handleBasePointsChange(field, newValue ?? 0)}
-                                    getOptionLabel={(option) => option.toString()} 
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label={field.charAt(0).toUpperCase() + field.slice(1)}
-                                            variant="outlined"
-                                        />
-                                    )}
-                                    style={{ width: 120 }}
-                                />
-                            ))}
-                        </Box>
+                </Box>
+                <Box key={"Base Points"}>
+                    <h3>{"Base Points"}</h3>
+                    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                        {statFields.map((field) => (
+                            <TextField
+                                key={field}
+                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                variant="outlined"
+                                type="number"
+                                value={basePoints[field]}
+                                onChange={(event) => 
+                                    handleBasePointsChange(field, Number(event.target.value) || 0)
+                                }
+                                style={{ width: 120 }}
+                                inputProps={{ min: 0, max: 252 }}
+                            />
+                        ))}
                     </Box>
-                    <Box key={"Actual Values"}>
-                        <h3>{"Actual Values"}</h3>
-                        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                            {statFields.map((field) => (
-                                <Autocomplete
-                                    key={field}
-                                    options={Array.from({ length: 1000 }, (_, i) => i + 0)}
-                                    value={actualValues[field]}
-                                    onChange={(event, newValue) => handleActualValuesChange(field, newValue ?? 0)}
-                                    getOptionLabel={(option) => option.toString()} 
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label={field.charAt(0).toUpperCase() + field.slice(1)}
-                                            variant="outlined"
-                                        />
-                                    )}
-                                    style={{ width: 120 }}
-                                />
-                            ))}
-                        </Box>
+                </Box>
+                <Box key={"Actual Values"}>
+                    <h3>{"Actual Values"}</h3>
+                    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                        {statFields.map((field) => (
+                            <TextField
+                                key={field}
+                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                variant="outlined"
+                                type="number"
+                                value={actualValues[field]}
+                                onChange={(event) => 
+                                    handleActualValuesChange(field, Number(event.target.value) || 0)
+                                }
+                                style={{ width: 120 }}
+                                inputProps={{ min: 1, max: 999 }}
+                            />
+                        ))}
                     </Box>
                 </Box><br /><br />
                 <TextField
@@ -409,7 +450,8 @@ const RegisterPokemon = () => {
                     fullWidth
                     value={note}
                     onChange={handleNoteChange}
-                />
+                /><br /><br />
+                <Button variant="contained" style={{ margin: "10px" }} onClick={postBredPokemon}>Register</Button>
             </div>
         </>
     );
