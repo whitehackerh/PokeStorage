@@ -7,7 +7,7 @@ import (
 
 type (
 	ISVMoveService interface {
-		Make([]model.SVMoveRelation) []entity.Move
+		MakeEntitiesFromModels([]model.SVMoveRelation) []entity.Move
 	}
 	SVMoveService struct{}
 )
@@ -16,13 +16,12 @@ func NewSVMoveService() ISVMoveService {
 	return &SVMoveService{}
 }
 
-func (s *SVMoveService) Make(moves []model.SVMoveRelation) []entity.Move {
+func (s *SVMoveService) MakeEntitiesFromModels(moves []model.SVMoveRelation) []entity.Move {
 	var result []entity.Move
 	for _, move := range moves {
 		moveType := entity.NewType(
 			move.Type.Id,
 			move.Type.Name,
-			move.Type.FirstAppearanceTitleId,
 		)
 
 		moveCategory := entity.NewMoveCategory(

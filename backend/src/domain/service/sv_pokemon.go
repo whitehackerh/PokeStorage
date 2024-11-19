@@ -7,7 +7,7 @@ import (
 
 type (
 	ISVPokemonService interface {
-		Make([]model.SVPokemonRelation) []entity.Pokemon
+		MakeEntitiesFromModels([]model.SVPokemonRelation) []entity.Pokemon
 	}
 	SVPokemonService struct{}
 )
@@ -16,20 +16,18 @@ func NewSVPokemonService() ISVPokemonService {
 	return &SVPokemonService{}
 }
 
-func (s *SVPokemonService) Make(pokemons []model.SVPokemonRelation) []entity.Pokemon {
+func (s *SVPokemonService) MakeEntitiesFromModels(pokemons []model.SVPokemonRelation) []entity.Pokemon {
 	var result []entity.Pokemon
 	for _, pokemon := range pokemons {
 		var types []entity.Type
 		types = append(types, entity.NewType(
 			pokemon.Type1.Id,
 			pokemon.Type1.Name,
-			pokemon.Type1.FirstAppearanceTitleId,
 		))
 		if pokemon.Type2 != nil {
 			types = append(types, entity.NewType(
 				pokemon.Type2.Id,
 				pokemon.Type2.Name,
-				pokemon.Type2.FirstAppearanceTitleId,
 			))
 		}
 
@@ -37,20 +35,17 @@ func (s *SVPokemonService) Make(pokemons []model.SVPokemonRelation) []entity.Pok
 		abilities = append(abilities, entity.NewAbility(
 			pokemon.Ability1.Id,
 			pokemon.Ability1.Name,
-			pokemon.Ability1.FirstAppearanceTitleId,
 		))
 		if pokemon.Ability2 != nil {
 			abilities = append(abilities, entity.NewAbility(
 				pokemon.Ability2.Id,
 				pokemon.Ability2.Name,
-				pokemon.Ability2.FirstAppearanceTitleId,
 			))
 		}
 		if pokemon.HiddenAbility != nil {
 			abilities = append(abilities, entity.NewAbility(
 				pokemon.HiddenAbility.Id,
 				pokemon.HiddenAbility.Name,
-				pokemon.HiddenAbility.FirstAppearanceTitleId,
 			))
 		}
 

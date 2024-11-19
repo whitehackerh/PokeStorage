@@ -59,7 +59,7 @@ func (interactor *GetSwShMovesInteractor) Execute(input GetMovesInput) (GetMoves
 	if err != nil {
 		return interactor.presenter.Output([]entity.Move{}), err
 	}
-	return interactor.presenter.Output(interactor.service.Make(moves)), err
+	return interactor.presenter.Output(interactor.service.MakeEntitiesFromModels(moves)), err
 }
 
 func (interactor *GetSVMovesInteractor) Execute(input GetMovesInput) (GetMovesOutput, error) {
@@ -67,5 +67,5 @@ func (interactor *GetSVMovesInteractor) Execute(input GetMovesInput) (GetMovesOu
 	if err != nil {
 		return interactor.presenter.Output([]entity.Move{}), err
 	}
-	return interactor.presenter.Output(interactor.service.Make(moves)), err
+	return interactor.presenter.Output(interactor.service.MakeEntitiesFromModels(moves)), err
 }

@@ -2,4 +2,5 @@ backend/.env
 /.gitattributes
 .vscode
 /.editorconfig
+.idea
 

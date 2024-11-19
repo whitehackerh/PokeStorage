@@ -40,6 +40,7 @@ func main() {
 			authGroup.GET("/items/:title-id", handler.GetItems)
 			authGroup.GET("/moves/:title-id", handler.GetMoves)
 			authGroup.GET("/genders", handler.GetGenders)
+			authGroup.POST("/bred-pokemons/:title-id", handler.PostBredPokemons)
 		}
 	}
 	r.Run()

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { TextField, Box } from '@mui/material';
+import { TextField, Box, Button } from '@mui/material';
 import { getItems } from '../../../api/Items';
 import { getMoves } from '../../../api/Moves';
 import { getPokemons } from '../../../api/Pokemons';
 import { getGenders } from '../../../api/Genders';
 import { getTeraTypes } from '../../../api/TeraTypes';
 import { getNatures } from '../../../api/Natures';
+import { postBredPokemons } from '../../../api/BredPokemons';
 import { Title } from '../../../entity/Title';
 import { Pokemon } from '../../../entity/Pokemon';
 import { Gender } from '../../../entity/Gender';
@@ -16,16 +17,23 @@ import { Move } from '../../../entity/Move';
 import { Item } from '../../../entity/Item';
 import { Nature } from '../../../entity/Nature';
 import { TeraType } from '../../../entity/TeraType';
+import { IndividualValues } from '../../../entity/IndividualValues';
+import { BasePoints } from '../../../entity/BasePoints';
+import { ActualValues} from '../../../entity/ActualValues';
 import { TitleEnum } from '../../../enum/Title';
 import { typeIcons } from '../../Icons/type';
 import { moveCategoryIcons } from '../../Icons/move_category';
 import Autocomplete from '@mui/material/Autocomplete';
+import { BredPokemon } from '../../../entity/BredPokemon';
+import { SVBredPokemon } from '../../../entity/SVBredPokemon';
+import { toSnakeCase } from '../../../util/convert';
 
 const RegisterPokemon = () => {
     const location = useLocation();
     const [title, setTitle] = useState<Title | null>(null);
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [genders, setGenders] = useState<Gender[]>([]);
+    const [level, setLevel] = useState<number>(50);
     const [teraTypes, setTeraTypes] = useState<TeraType[]>([]);
     const [natures, setNatures] = useState<Nature[]>([]);
     const [items, setItems] = useState<Item[]>([]);
@@ -39,7 +47,39 @@ const RegisterPokemon = () => {
     const [selectedTeraType, setSelectedTeraType] = useState<TeraType | null>(null);
     const [selectedNature, setSelectedNature] = useState<Nature | null>(null);
     const [abilitiesOptions, setAbilitiesOptions] = useState<Ability[]>([]);
+    const [individualValues, setIndividualValues] = useState<IndividualValues>({
+        id: "",
+        hitPoints: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+    });
+    const [basePoints, setBasePoints] = useState<BasePoints>({
+        id: "",
+        hitPoints: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+    });
+    const [actualValues, setActualValues] = useState<ActualValues>({
+        id: "",
+        hitPoints: 1,
+        attack: 1,
+        defense: 1,
+        specialAttack: 1,
+        specialDefense: 1,
+        speed: 1,
+    });
+    const [note, setNote] = useState<string | null>(null);
     const navigate = useNavigate();
+
+    const statFields: ("hitPoints" | "attack" | "defense" | "specialAttack" | "specialDefense" | "speed")[] = [
+        "hitPoints", "attack", "defense", "specialAttack", "specialDefense", "speed"
+    ];
 
     useEffect(() => {
         if (location.state && location.state.title) {
@@ -87,6 +127,54 @@ const RegisterPokemon = () => {
         }
     }, [selectedPokemon]);
 
+    const postBredPokemon = () => {
+        try {
+            if (title) {
+                const bredPokemon = makeBredPokemon()
+                if (bredPokemon) {
+                    postBredPokemons(title.id, toSnakeCase(bredPokemon));
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const makeBredPokemon = (): any | null => {
+        if (selectedPokemon
+            && selectedGender
+            && selectedAbility
+            && selectedNature
+            && selectedItem
+            && selectedTeraType
+        ) {
+            return {
+                bredPokemon: {
+                    id: '',
+                    pokemonId: selectedPokemon.id,
+                    nationalPokedexNo: selectedPokemon.nationalPokedexNo,
+                    formeNo: selectedPokemon.formeNo,
+                    name: selectedPokemon.name,
+                    formeName: selectedPokemon.formeName,
+                    gender: selectedGender,
+                    level: level,
+                    types: selectedPokemon.types,
+                    ability: selectedAbility,
+                    nature: selectedNature,
+                    heldItem: selectedItem,
+                    baseStats: selectedPokemon.baseStats,
+                    individualValues: individualValues,
+                    basePoints: basePoints,
+                    actualValues: actualValues,
+                    moves: selectedMoves.filter((move): move is Move => move !== null),
+                    note: note,
+                    teraType: selectedTeraType,
+                },
+            }
+        }
+        return null;
+    }
+
     const handlePokemonChange = (_: any, value: Pokemon | null) => {
         setSelectedPokemon(value);
         if (value?.presetHeldItem) {
@@ -120,6 +208,22 @@ const RegisterPokemon = () => {
         const newSelectedMoves = [...selectedMoves];
         newSelectedMoves[index] = value;
         setSelectedMoves(newSelectedMoves);
+    };
+
+    const handleIndividualValuesChange = ( field: keyof IndividualValues, value: number) => {
+        setIndividualValues((prev) => ({ ...prev, [field]: value }));
+    }
+
+    const handleBasePointsChange = ( field: keyof BasePoints, value: number) => {
+        setBasePoints((prev) => ({ ...prev, [field]: value }));
+    }
+
+    const handleActualValuesChange = ( field: keyof ActualValues, value: number) => {
+        setActualValues((prev) => ({ ...prev, [field]: value }));
+    }
+
+    const handleNoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNote(event.target.value);
     };
 
     if (!title) {
@@ -193,6 +297,16 @@ const RegisterPokemon = () => {
                     style={styles.autocomplete}
                 />
                 <Autocomplete
+                    id="genders"
+                    options={Array.from({ length: 100 }, (_, i) => i + 1)}
+                    value={50}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Level" variant="outlined" />
+                    )}
+                    style={styles.autocomplete}
+                    disabled
+                />
+                <Autocomplete
                     id="abilities"
                     options={abilitiesOptions}
                     value={selectedAbility}
@@ -234,7 +348,7 @@ const RegisterPokemon = () => {
                     getOptionLabel={(option) => option.name}
                     onChange={handleItemChange}
                     renderInput={(params) => (
-                        <TextField {...params} label="Item" variant="outlined" />
+                        <TextField {...params} label="Held Item" variant="outlined" />
                     )}
                     disabled={selectedPokemon !== null && selectedPokemon.presetHeldItem !== null}
                     style={styles.autocomplete}
@@ -270,6 +384,74 @@ const RegisterPokemon = () => {
                         )}
                     </Box>
                 ))}
+                <Box key={"Individual Values"}>
+                    <h3>{"Individual Values"}</h3>
+                    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                        {statFields.map((field) => (
+                            <TextField
+                                key={field}
+                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                variant="outlined"
+                                type="number"
+                                value={individualValues[field]}
+                                onChange={(event) => 
+                                    handleIndividualValuesChange(field, Number(event.target.value) || 0)
+                                }
+                                style={{ width: 120 }}
+                                inputProps={{ min: 0, max: 31 }}
+                            />
+                        ))}
+                    </Box>
+                </Box>
+                <Box key={"Base Points"}>
+                    <h3>{"Base Points"}</h3>
+                    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                        {statFields.map((field) => (
+                            <TextField
+                                key={field}
+                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                variant="outlined"
+                                type="number"
+                                value={basePoints[field]}
+                                onChange={(event) => 
+                                    handleBasePointsChange(field, Number(event.target.value) || 0)
+                                }
+                                style={{ width: 120 }}
+                                inputProps={{ min: 0, max: 252 }}
+                            />
+                        ))}
+                    </Box>
+                </Box>
+                <Box key={"Actual Values"}>
+                    <h3>{"Actual Values"}</h3>
+                    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                        {statFields.map((field) => (
+                            <TextField
+                                key={field}
+                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                variant="outlined"
+                                type="number"
+                                value={actualValues[field]}
+                                onChange={(event) => 
+                                    handleActualValuesChange(field, Number(event.target.value) || 0)
+                                }
+                                style={{ width: 120 }}
+                                inputProps={{ min: 1, max: 999 }}
+                            />
+                        ))}
+                    </Box>
+                </Box><br /><br />
+                <TextField
+                    id="note"
+                    label="Note"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    fullWidth
+                    value={note}
+                    onChange={handleNoteChange}
+                /><br /><br />
+                <Button variant="contained" style={{ margin: "10px" }} onClick={postBredPokemon}>Register</Button>
             </div>
         </>
     );
