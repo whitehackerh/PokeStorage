@@ -24,8 +24,6 @@ import { TitleEnum } from '../../../enum/Title';
 import { typeIcons } from '../../Icons/type';
 import { moveCategoryIcons } from '../../Icons/move_category';
 import Autocomplete from '@mui/material/Autocomplete';
-import { BredPokemon } from '../../../entity/BredPokemon';
-import { SVBredPokemon } from '../../../entity/SVBredPokemon';
 import { toSnakeCase } from '../../../util/convert';
 
 const RegisterPokemon = () => {
@@ -75,7 +73,6 @@ const RegisterPokemon = () => {
         speed: 1,
     });
     const [note, setNote] = useState<string | null>(null);
-    const navigate = useNavigate();
 
     const statFields: ("hitPoints" | "attack" | "defense" | "specialAttack" | "specialDefense" | "speed")[] = [
         "hitPoints", "attack", "defense", "specialAttack", "specialDefense", "speed"
