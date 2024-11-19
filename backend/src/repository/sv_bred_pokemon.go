@@ -8,6 +8,7 @@ import (
 type (
 	ISVBredPokemonRepository interface {
 		Create(*gorm.DB, model.SVBredPokemon) error
+		FetchByUserId(string) ([]model.SVBredPokemonRelation, error)
 	}
 	SVBredPokemonRepository struct {
 		Db *gorm.DB
@@ -26,4 +27,41 @@ func (s *SVBredPokemonRepository) Create(tx *gorm.DB, model model.SVBredPokemon)
 		return result.Error
 	}
 	return nil
+}
+
+func (s *SVBredPokemonRepository) FetchByUserId(userId string) ([]model.SVBredPokemonRelation, error) {
+	var svBredPokemonRelations []model.SVBredPokemonRelation
+	if err := s.Db.Preload("SVPokemonRelation").
+		Preload("SVPokemonRelation.Type1").
+		Preload("SVPokemonRelation.Type2").
+		Preload("SVPokemonRelation.Ability1").
+		Preload("SVPokemonRelation.Ability2").
+		Preload("SVPokemonRelation.HiddenAbility").
+		Preload("SVPokemonRelation.BaseStats").
+		Preload("SVPokemonRelation.PresetHeldItem").
+		Preload("Gender").
+		Preload("TeraType").
+		Preload("Ability").
+		Preload("Nature").
+		Preload("HeldItem").
+		Preload("IndividualValues").
+		Preload("BasePoints").
+		Preload("ActualValues").
+		Preload("Move1Relation").
+		Preload("Move1Relation.Type").
+		Preload("Move1Relation.MoveCategory").
+		Preload("Move2Relation").
+		Preload("Move2Relation.Type").
+		Preload("Move2Relation.MoveCategory").
+		Preload("Move3Relation").
+		Preload("Move3Relation.Type").
+		Preload("Move3Relation.MoveCategory").
+		Preload("Move4Relation").
+		Preload("Move4Relation.Type").
+		Preload("Move4Relation.MoveCategory").
+		Find(&svBredPokemonRelations).
+		Error; err != nil {
+		return nil, err
+	}
+	return svBredPokemonRelations, nil
 }

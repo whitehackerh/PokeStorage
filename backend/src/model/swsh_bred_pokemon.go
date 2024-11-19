@@ -19,3 +19,23 @@ type SwShBredPokemon struct {
 	Move4Id            *int    `gorm:"column:move_4_id"`
 	Note               *string `gorm:"column:note"`
 }
+
+type SwShBredPokemonRelation struct {
+	SwShBredPokemon
+	SwShPokemonRelation SwShPokemonRelation  `gorm:"foreignKey:PokemonId;references:Id"`
+	Gender              Gender               `gorm:"foreignKey:GenderId;references:Id"`
+	Ability             Ability              `gorm:"foreignKey:AbilityId;references:Id"`
+	Nature              Nature               `gorm:"foreignKey:NatureId;references:Id"`
+	HeldItem            *SwShItem            `gorm:"foreignKey:ItemId;references:Id"`
+	IndividualValues    SwShIndividualValues `gorm:"foreignKey:Id;references:BredPokemonId"`
+	BasePoints          SwShBasePoints       `gorm:"foreignKey:Id;references:BredPokemonId"`
+	ActualValues        SwShActualValues     `gorm:"foreignKey:Id;references:BredPokemonId"`
+	Move1Relation       SwShMoveRelation     `gorm:"foreignKey:Move1Id;references:Id"`
+	Move2Relation       *SwShMoveRelation    `gorm:"foreignKey:Move2Id;references:Id"`
+	Move3Relation       *SwShMoveRelation    `gorm:"foreignKey:Move3Id;references:Id"`
+	Move4Relation       *SwShMoveRelation    `gorm:"foreignKey:Move4Id;references:Id"`
+}
+
+func (s *SwShBredPokemonRelation) TableName() string {
+	return "swsh_bred_pokemons"
+}

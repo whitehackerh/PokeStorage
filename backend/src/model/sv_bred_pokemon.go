@@ -19,3 +19,24 @@ type SVBredPokemon struct {
 	Move4Id            *int    `gorm:"column:move_4_id"`
 	Note               *string `gorm:"column:note"`
 }
+
+type SVBredPokemonRelation struct {
+	SVBredPokemon
+	SVPokemonRelation SVPokemonRelation  `gorm:"foreignKey:PokemonId;references:Id"`
+	Gender            Gender             `gorm:"foreignKey:GenderId;references:Id"`
+	TeraType          TeraType           `gorm:"foreignKey:TeraTypeId;references:Id"`
+	Ability           Ability            `gorm:"foreignKey:AbilityId;references:Id"`
+	Nature            Nature             `gorm:"foreignKey:NatureId;references:Id"`
+	HeldItem          *SVItem            `gorm:"foreignKey:ItemId;references:Id"`
+	IndividualValues  SVIndividualValues `gorm:"foreignKey:Id;references:BredPokemonId"`
+	BasePoints        SVBasePoints       `gorm:"foreignKey:Id;references:BredPokemonId"`
+	ActualValues      SVActualValues     `gorm:"foreignKey:Id;references:BredPokemonId"`
+	Move1Relation     SVMoveRelation     `gorm:"foreignKey:Move1Id;references:Id"`
+	Move2Relation     *SVMoveRelation    `gorm:"foreignKey:Move2Id;references:Id"`
+	Move3Relation     *SVMoveRelation    `gorm:"foreignKey:Move3Id;references:Id"`
+	Move4Relation     *SVMoveRelation    `gorm:"foreignKey:Move4Id;references:Id"`
+}
+
+func (s *SVBredPokemonRelation) TableName() string {
+	return "sv_bred_pokemons"
+}
