@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { TextField, Box, Button } from '@mui/material';
 import { getItems } from '../../../api/Items';
