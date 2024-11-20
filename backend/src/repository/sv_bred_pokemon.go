@@ -60,6 +60,7 @@ func (s *SVBredPokemonRepository) FetchByUserId(userId string) ([]model.SVBredPo
 		Preload("Move4Relation.Type").
 		Preload("Move4Relation.MoveCategory").
 		Where("user_id = ?", userId).
+		Where("deleted_at IS NULL").
 		Order("created_at desc").
 		Find(&svBredPokemonRelations).
 		Error; err != nil {

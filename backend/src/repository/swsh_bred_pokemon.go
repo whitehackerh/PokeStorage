@@ -59,6 +59,7 @@ func (s *SwShBredPokemonRepository) FetchByUserId(userId string) ([]model.SwShBr
 		Preload("Move4Relation.Type").
 		Preload("Move4Relation.MoveCategory").
 		Where("user_id = ?", userId).
+		Where("deleted_at IS NULL").
 		Order("created_at desc").
 		Find(&swShBredPokemonRelations).
 		Error; err != nil {
