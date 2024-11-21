@@ -17,6 +17,11 @@ const Menu = () => {
       if (!title) {
         return <div>Loading...</div>;
       }
+
+    const handleBredPokemonListClick = (title: Title) => {
+        navigate('/bred-pokemon-list', { state: {title: title }});
+    }
+
     const handleRegisterPokemonClick = (title: Title) => {
         navigate('/register-pokemon', { state: { title: title }});
     }
@@ -28,7 +33,7 @@ const Menu = () => {
                     {title.title}
                 </Typography>
                 <List>
-                    <ListItem style={{ justifyContent: 'center', backgroundColor: '#f0f0f0', margin: '10px 0', borderRadius: '8px' }}>
+                    <ListItem onClick={() => handleBredPokemonListClick(title)} style={{ justifyContent: 'center', backgroundColor: '#f0f0f0', margin: '10px 0', borderRadius: '8px' }}>
                         <Typography variant="body1" style={{ fontSize: '1.5rem' }}>
                             Registered Pokémon List
                         </Typography>

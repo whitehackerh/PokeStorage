@@ -1,5 +1,5 @@
 import { withTokenRequest, getRequestHeaders } from '../http';
-import { Nature } from '../entity/Nature';
+import { Nature, NewNatureFromJson } from '../entity/Nature';
 
 export const getNatures = async (): Promise<Nature[]> => {
     try {
@@ -7,10 +7,7 @@ export const getNatures = async (): Promise<Nature[]> => {
             headers: getRequestHeaders()
         });
         const natures: Nature[] = response.data.data.natures.map((nature: any) => {
-            return {
-                id: nature.id,
-                name: nature.name,
-            }
+            return NewNatureFromJson(nature);
         });
         return natures;
     } catch (error) {
