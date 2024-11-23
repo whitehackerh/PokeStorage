@@ -443,7 +443,7 @@ const RegisterPokemon = () => {
                     multiline
                     rows={4}
                     variant="outlined"
-                    fullWidth
+                    style={{ width: 600 }}
                     value={note}
                     onChange={handleNoteChange}
                 /><br /><br />

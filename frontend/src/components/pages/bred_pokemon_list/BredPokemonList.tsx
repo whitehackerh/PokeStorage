@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Title } from '../../../entity/Title';
 import { SVBredPokemon } from '../../../entity/SVBredPokemon';
 import { getBredPokemons } from '../../../api/BredPokemons';
@@ -7,6 +7,7 @@ import "./BredPokemonListPage.css";
 
 const BredPokemonListPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [title, setTitle] = useState<Title | null>(null);
     const [bredPokemons, setBredPokemons] = useState<SVBredPokemon[]>([]);
 
@@ -29,12 +30,8 @@ const BredPokemonListPage = () => {
         }
     }, [title]);
 
-    const getTypeIconPath = (typeName: string) => {
-        try {
-            return require(`../../../assets/img/type/${typeName.toLowerCase()}.png`);
-        } catch {
-            return "";
-        }
+    const handleCardClick = (bredPokemon: any) => {
+        navigate('/bred-pokemon-detail', { state: { title: title, bredPokemon: bredPokemon } });
     };
 
     if (!title || !bredPokemons) {
@@ -44,7 +41,7 @@ const BredPokemonListPage = () => {
     return (
         <div className="pokemon-list">
             {bredPokemons.map((pokemon) => (
-                <div key={pokemon.bredPokemon.id} className="pokemon-card">
+                <div key={pokemon.bredPokemon.id} className="pokemon-card" onClick={() => handleCardClick(pokemon)}>
                     <div className="pokemon-header">
                         <h3>{pokemon.bredPokemon.name} {pokemon.bredPokemon.formeName && (
                         `(${pokemon.bredPokemon.formeName})`

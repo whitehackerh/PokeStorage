@@ -13,11 +13,8 @@ const Menu = () => {
           setTitle(location.state.title);
         }
       }, [location.state]);
-    
-      if (!title) {
-        return <div>Loading...</div>;
-      }
 
+      
     const handleBredPokemonListClick = (title: Title) => {
         navigate('/bred-pokemon-list', { state: {title: title }});
     }
@@ -25,6 +22,11 @@ const Menu = () => {
     const handleRegisterPokemonClick = (title: Title) => {
         navigate('/register-pokemon', { state: { title: title }});
     }
+    
+    if (!title) {
+        return <div>Loading...</div>;
+    }
+
     
     return (
         <>
