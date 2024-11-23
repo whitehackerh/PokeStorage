@@ -5,9 +5,9 @@ import { Ability, NewAbilityFromJson } from '../entity/Ability';
 import { NewBaseStatsFromJson } from '../entity/BaseStats';
 import { Item } from '../entity/Item';
 
-export const getPokemons = async (titleId: number): Promise<Pokemon[]> => {
+export const getPokemons = async (): Promise<Pokemon[]> => {
     try {
-        const response = await withTokenRequest.get(`/pokemons/${titleId}`, {
+        const response = await withTokenRequest.get('/sv/pokemons', {
             headers: getRequestHeaders()
         });
         const pokemons: Pokemon[] = response.data.data.pokemons.map((item: any) => {

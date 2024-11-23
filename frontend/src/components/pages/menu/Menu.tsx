@@ -26,7 +26,6 @@ const Menu = () => {
     if (!title) {
         return <div>Loading...</div>;
     }
-
     
     return (
         <>

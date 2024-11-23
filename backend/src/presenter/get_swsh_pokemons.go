@@ -6,14 +6,14 @@ import (
 	"github.com/whitehackerh/PokeStorage/src/usecase"
 )
 
-type GetPokemonsPresenter struct{}
+type GetSwShPokemonsPresenter struct{}
 
-func NewGetPokemonsPresenter() usecase.GetPokemonsPresenter {
-	return &GetPokemonsPresenter{}
+func NewGetSwShPokemonsPresenter() usecase.GetSwShPokemonsPresenter {
+	return &GetSwShPokemonsPresenter{}
 }
 
-func (p *GetPokemonsPresenter) Output(pokemons []entity.Pokemon) usecase.GetPokemonsOutput {
-	output := usecase.GetPokemonsOutput{
+func (p *GetSwShPokemonsPresenter) Output(pokemons []entity.Pokemon) usecase.GetSwShPokemonsOutput {
+	output := usecase.GetSwShPokemonsOutput{
 		Pokemons: make([]api_schema.Pokemon, len(pokemons)),
 	}
 	for i, pokemon := range pokemons {

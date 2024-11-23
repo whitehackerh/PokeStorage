@@ -6,14 +6,14 @@ import (
 	"github.com/whitehackerh/PokeStorage/src/usecase"
 )
 
-type GetItemsPresenter struct{}
+type GetSwShItemsPresenter struct{}
 
-func NewGetItemsPresenter() usecase.GetItemsPresenter {
-	return &GetItemsPresenter{}
+func NewGetSwShItemsPresenter() usecase.GetSwShItemsPresenter {
+	return &GetSwShItemsPresenter{}
 }
 
-func (p *GetItemsPresenter) Output(Items []entity.Item) usecase.GetItemsOutput {
-	output := usecase.GetItemsOutput{
+func (p *GetSwShItemsPresenter) Output(Items []entity.Item) usecase.GetSwShItemsOutput {
+	output := usecase.GetSwShItemsOutput{
 		Items: []api_schema.Item{},
 	}
 	for _, item := range Items {

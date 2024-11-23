@@ -1,9 +1,9 @@
 import { withTokenRequest, getRequestHeaders } from '../http';
 import { Move, NewMoveFromJson } from '../entity/Move';
 
-export const getMoves = async (titleId: number): Promise<Move[]> => {
+export const getMoves = async (): Promise<Move[]> => {
     try {
-        const response = await withTokenRequest.get(`/moves/${titleId}`, {
+        const response = await withTokenRequest.get('/sv/moves', {
             headers: getRequestHeaders()
         });
         const moves: Move[] = response.data.data.moves.map((item: any) => {

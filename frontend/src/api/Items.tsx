@@ -1,9 +1,9 @@
 import { withTokenRequest, getRequestHeaders } from '../http';
 import { Item } from '../entity/Item';
 
-export const getItems = async (titleId: number): Promise<Item[]> => {
+export const getItems = async (): Promise<Item[]> => {
     try {
-        const response = await withTokenRequest.get(`/items/${titleId}`, {
+        const response = await withTokenRequest.get('/sv/items', {
             headers: getRequestHeaders()
         });
         const items: Item[] = response.data.data.items.map((item: any) => {

@@ -4,6 +4,7 @@ import { Title } from '../../../entity/Title';
 import { SVBredPokemon } from '../../../entity/SVBredPokemon';
 import { getBredPokemons } from '../../../api/BredPokemons';
 import "./BredPokemonListPage.css";
+import { TitleEnum } from '../../../enum/Title';
 
 const BredPokemonListPage = () => {
     const location = useLocation();
@@ -20,7 +21,9 @@ const BredPokemonListPage = () => {
     useEffect(() => {
         const fetch = async (title: Title) => {
             try {
-                setBredPokemons(await getBredPokemons(title.id));
+                if (title.id == TitleEnum.SV) {
+                    setBredPokemons(await getBredPokemons());
+                }
             } catch (error) {
                 console.error(error);
             }

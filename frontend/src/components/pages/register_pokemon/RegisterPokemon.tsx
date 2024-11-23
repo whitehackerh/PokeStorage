@@ -87,11 +87,13 @@ const RegisterPokemon = () => {
     useEffect(() => {
         const fetch = async (title: Title) => {
             try {
-                setPokemons(await getPokemons(title.id));
-                setGenders(await getGenders());
-                setNatures(await getNatures());
-                setItems(await getItems(title.id));
-                setMoves(await getMoves(title.id));
+                if (title.id == TitleEnum.SV) {
+                    setPokemons(await getPokemons());
+                    setGenders(await getGenders());
+                    setNatures(await getNatures());
+                    setItems(await getItems());
+                    setMoves(await getMoves());
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -128,7 +130,7 @@ const RegisterPokemon = () => {
             if (title) {
                 const bredPokemon = makeBredPokemon()
                 if (bredPokemon) {
-                    postBredPokemons(title.id, toSnakeCase(bredPokemon));
+                    postBredPokemons(toSnakeCase(bredPokemon));
                 }
             }
         } catch (error) {

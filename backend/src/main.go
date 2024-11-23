@@ -34,14 +34,28 @@ func main() {
 		{
 			authGroup.POST("/sign-out", handler.SignOut)
 			authGroup.GET("/titles", handler.GetTitles)
-			authGroup.GET("/pokemons/:title-id", handler.GetPokemons)
+
 			authGroup.GET("/tera-types", handler.GetTeraTypes)
 			authGroup.GET("/natures", handler.GetNatures)
-			authGroup.GET("/items/:title-id", handler.GetItems)
-			authGroup.GET("/moves/:title-id", handler.GetMoves)
 			authGroup.GET("/genders", handler.GetGenders)
-			authGroup.POST("/bred-pokemons/:title-id", handler.PostBredPokemons)
-			authGroup.GET("/bred-pokemons/:title-id", handler.GetBredPokemons)
+
+			swshGroup := authGroup.Group("/swsh")
+			{
+				swshGroup.GET("/pokemons", handler.GetSwShPokemons)
+				swshGroup.GET("/items", handler.GetSwShItems)
+				swshGroup.GET("/moves", handler.GetSwShMoves)
+				swshGroup.POST("/bred-pokemons", handler.PostSwShBredPokemons)
+				swshGroup.GET("/bred-pokemons", handler.GetSwShBredPokemons)
+			}
+
+			svGroup := authGroup.Group("/sv")
+			{
+				svGroup.GET("/pokemons", handler.GetSVPokemons)
+				svGroup.GET("/items", handler.GetSVItems)
+				svGroup.GET("/moves", handler.GetSVMoves)
+				svGroup.POST("/bred-pokemons", handler.PostSVBredPokemons)
+				svGroup.GET("/bred-pokemons", handler.GetSVBredPokemons)
+			}
 		}
 	}
 	r.Run()
