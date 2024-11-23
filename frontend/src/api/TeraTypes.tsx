@@ -1,5 +1,5 @@
 import { withTokenRequest, getRequestHeaders } from '../http';
-import { TeraType } from '../entity/TeraType';
+import { NewTeraTypeFromJson, TeraType } from '../entity/TeraType';
 
 export const getTeraTypes = async (): Promise<TeraType[]> => {
     try {
@@ -7,10 +7,7 @@ export const getTeraTypes = async (): Promise<TeraType[]> => {
             headers: getRequestHeaders()
         });
         const teraTypes: TeraType[] = response.data.data.tera_types.map((teraType: any) => {
-            return {
-                id: teraType.id,
-                name: teraType.name,
-            }
+            return NewTeraTypeFromJson(teraType);
         });
         return teraTypes;
     } catch (error) {

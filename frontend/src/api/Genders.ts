@@ -1,5 +1,5 @@
 import { withTokenRequest, getRequestHeaders } from '../http';
-import { Gender } from '../entity/Gender';
+import { Gender, NewGenderFromJson } from '../entity/Gender';
 
 export const getGenders = async (): Promise<Gender[]> => {
     try {
@@ -7,10 +7,7 @@ export const getGenders = async (): Promise<Gender[]> => {
             headers: getRequestHeaders()
         });
         const genders: Gender[] = response.data.data.genders.map((gender: any) => {
-            return {
-                id: gender.id,
-                name: gender.name,
-            }
+            return NewGenderFromJson(gender);
         });
         return genders;
     } catch (error) {

@@ -1,0 +1,78 @@
+.pokemon-list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 1行に6列 */
+    gap: 16px;
+    padding: 16px;
+    background-color: #f8f8f8;
+}
+
+.pokemon-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 100%; /* カードの幅を均一に */
+    max-width: 240px; /* カード幅を広げる */
+    overflow: hidden; /* カード内の内容が溢れないように */
+    display: flex;
+    flex-direction: column;
+}
+
+.pokemon-header {
+    margin-bottom: 8px;
+}
+
+.pokemon-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.pokemon-header p {
+    font-size: 1em;
+    color: #666;
+}
+
+.pokemon-types {
+    display: flex;
+    gap: 4px;  /* タイプの画像間の隙間を減らす */
+    margin-top: 4px;  /* タイプ画像の上部の隙間を減らす */
+}
+
+.type-icon {
+    width: 60px;  /* タイプのアイコンのサイズ */
+    height: 60px;
+    object-fit: contain; /* 縦横比を保ちながら収める */
+}
+
+.held-item {
+    margin: 4px 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.pokemon-card p {
+    margin: 8px 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.moves ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 4px 0 0 0;
+}
+
+.moves li {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.pokemon-card .note {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+}
