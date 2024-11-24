@@ -9,6 +9,7 @@ type (
 	ISwShBredPokemonRepository interface {
 		Create(*gorm.DB, model.SwShBredPokemon) error
 		FetchByUserId(string) ([]model.SwShBredPokemonRelation, error)
+		Update(*gorm.DB, model.SwShBredPokemon) error
 	}
 	SwShBredPokemonRepository struct {
 		Db *gorm.DB
@@ -66,4 +67,12 @@ func (s *SwShBredPokemonRepository) FetchByUserId(userId string) ([]model.SwShBr
 		return nil, err
 	}
 	return swShBredPokemonRelations, nil
+}
+
+func (s *SwShBredPokemonRepository) Update(tx *gorm.DB, model model.SwShBredPokemon) error {
+	result := tx.Updates(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
