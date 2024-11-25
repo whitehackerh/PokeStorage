@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TextField, Box, Button } from '@mui/material';
 import { getItems } from '../../../api/Items';
 import { getMoves } from '../../../api/Moves';
@@ -7,7 +7,7 @@ import { getPokemons } from '../../../api/Pokemons';
 import { getGenders } from '../../../api/Genders';
 import { getTeraTypes } from '../../../api/TeraTypes';
 import { getNatures } from '../../../api/Natures';
-import { postBredPokemons } from '../../../api/BredPokemons';
+import { postBredPokemons, putBredPokemons } from '../../../api/BredPokemons';
 import { Title } from '../../../entity/Title';
 import { Pokemon } from '../../../entity/Pokemon';
 import { Gender } from '../../../entity/Gender';
@@ -24,9 +24,13 @@ import { typeIcons } from '../../Icons/type';
 import { moveCategoryIcons } from '../../Icons/move_category';
 import Autocomplete from '@mui/material/Autocomplete';
 import { toSnakeCase } from '../../../util/convert';
+import { SVBredPokemon } from '../../../entity/SVBredPokemon';
 
 const RegisterPokemon = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const [bredPokemon, setBredPokemon] = useState<SVBredPokemon | null>(null);
     const [title, setTitle] = useState<Title | null>(null);
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [genders, setGenders] = useState<Gender[]>([]);
@@ -82,6 +86,10 @@ const RegisterPokemon = () => {
             setTitle(location.state.title);
             setToggleTeraType(location.state.title.id == TitleEnum.SV);
         }
+        if (location.state && location.state.bredPokemon) {
+            setIsEditMode(true);
+            setBredPokemon(location.state.bredPokemon);
+        }
     }, [location.state]);
 
     useEffect(() => {
@@ -116,29 +124,93 @@ const RegisterPokemon = () => {
         }
     }, [title]);
 
+    
+    useEffect(() => {
+        if (pokemons.length && bredPokemon) {
+            const matchedPokemon = pokemons.find(
+                (pokemon) => pokemon.id === bredPokemon.bredPokemon.pokemonId
+            );
+            if (matchedPokemon) {
+                handlePokemonChange(null, matchedPokemon);
+            }
+            setSelectedGender(bredPokemon.bredPokemon.gender);
+            setLevel(50);
+            setSelectedNature(bredPokemon.bredPokemon.nature);
+            setSelectedItem(bredPokemon.bredPokemon.heldItem);
+            setIndividualValues({
+                id: bredPokemon.bredPokemon.individualValues.id,
+                hitPoints: bredPokemon.bredPokemon.individualValues.hitPoints,
+                attack: bredPokemon.bredPokemon.individualValues.attack,
+                defense: bredPokemon.bredPokemon.individualValues.defense,
+                specialAttack: bredPokemon.bredPokemon.individualValues.specialAttack,
+                specialDefense: bredPokemon.bredPokemon.individualValues.specialDefense,
+                speed: bredPokemon.bredPokemon.individualValues.speed,
+            });
+            setBasePoints({
+                id: bredPokemon.bredPokemon.basePoints.id,
+                hitPoints: bredPokemon.bredPokemon.basePoints.hitPoints,
+                attack: bredPokemon.bredPokemon.basePoints.attack,
+                defense: bredPokemon.bredPokemon.basePoints.defense,
+                specialAttack: bredPokemon.bredPokemon.basePoints.specialAttack,
+                specialDefense: bredPokemon.bredPokemon.basePoints.specialDefense,
+                speed: bredPokemon.bredPokemon.basePoints.speed,
+            });
+            setActualValues({
+                id: bredPokemon.bredPokemon.actualValues.id,
+                hitPoints: bredPokemon.bredPokemon.actualValues.hitPoints,
+                attack: bredPokemon.bredPokemon.actualValues.attack,
+                defense: bredPokemon.bredPokemon.actualValues.defense,
+                specialAttack: bredPokemon.bredPokemon.actualValues.specialAttack,
+                specialDefense: bredPokemon.bredPokemon.actualValues.specialDefense,
+                speed: bredPokemon.bredPokemon.actualValues.speed,
+            });
+            const updatedMoves = [...selectedMoves];
+            bredPokemon.bredPokemon.moves.forEach((move, index) => {
+                updatedMoves[index] = move;
+            });
+            setSelectedMoves(updatedMoves);
+            setNote(bredPokemon.bredPokemon.note);
+            if (title && title.id == TitleEnum.SV) {
+                setSelectedTeraType(bredPokemon.teraType);
+            }
+        }
+    }, [bredPokemon, pokemons, genders, natures, items, moves])
+
     useEffect(() => {
         if (selectedPokemon) {
             setAbilitiesOptions(selectedPokemon.abilities);
             setSelectedAbility(null);
+            if (bredPokemon) {
+                const matchedAbility = selectedPokemon.abilities.find(
+                    (ability) => ability.id === bredPokemon.bredPokemon.ability.id
+                )
+                if (matchedAbility) {
+                    setSelectedAbility(matchedAbility);
+                }
+            }
         } else {
             setAbilitiesOptions([]);
         }
     }, [selectedPokemon]);
 
-    const postBredPokemon = () => {
+    const handleRegisterClick = async () => {
         try {
             if (title) {
-                const bredPokemon = makeBredPokemon()
-                if (bredPokemon) {
-                    postBredPokemons(toSnakeCase(bredPokemon));
+                if (!isEditMode) {
+                    const madeBredPokemon = makeBredPokemon()
+                    await postBredPokemons(toSnakeCase(madeBredPokemon));
+                } else if (isEditMode && bredPokemon) {
+                    const madeBredPokemon = makeBredPokemon(bredPokemon.bredPokemon.id);
+                    await putBredPokemons(toSnakeCase(madeBredPokemon));
                 }
+                navigate('/bred-pokemon-list', { state: { title: title } });
             }
         } catch (error) {
             console.error(error);
         }
     }
 
-    const makeBredPokemon = (): any | null => {
+    const makeBredPokemon = (id = ''): any | null => {
         if (selectedPokemon
             && selectedGender
             && selectedAbility
@@ -148,7 +220,7 @@ const RegisterPokemon = () => {
         ) {
             return {
                 bredPokemon: {
-                    id: '',
+                    id: id,
                     pokemonId: selectedPokemon.id,
                     nationalPokedexNo: selectedPokemon.nationalPokedexNo,
                     formeNo: selectedPokemon.formeNo,
@@ -177,8 +249,6 @@ const RegisterPokemon = () => {
         setSelectedPokemon(value);
         if (value?.presetHeldItem) {
             setSelectedItem(value.presetHeldItem);
-        } else {
-
         }
     };
 
@@ -261,6 +331,7 @@ const RegisterPokemon = () => {
                     <Autocomplete
                         id="pokemon"
                         options={pokemons}
+                        value={selectedPokemon}
                         getOptionLabel={(option) =>
                             option.formeName ? `${option.name} (${option.formeName})` : option.name
                         }
@@ -269,6 +340,7 @@ const RegisterPokemon = () => {
                             <TextField {...params} label="Pokémon" variant="outlined" />
                         )}
                         style={{'width': '400px'}}
+                        disabled={isEditMode}
                     />
                     {selectedPokemon && (
                         <Box style={styles.iconContainer}>
@@ -449,7 +521,7 @@ const RegisterPokemon = () => {
                     value={note}
                     onChange={handleNoteChange}
                 /><br /><br />
-                <Button variant="contained" style={{ margin: "10px" }} onClick={postBredPokemon}>Register</Button>
+                <Button variant="contained" style={{ margin: "10px" }} onClick={handleRegisterClick}>Register</Button>
             </div>
         </>
     );

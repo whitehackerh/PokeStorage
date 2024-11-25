@@ -46,6 +46,7 @@ func main() {
 				swshGroup.GET("/moves", handler.GetSwShMoves)
 				swshGroup.POST("/bred-pokemons", handler.PostSwShBredPokemons)
 				swshGroup.GET("/bred-pokemons", handler.GetSwShBredPokemons)
+				swshGroup.PUT("/bred-pokemons", handler.PutSwShBredPokemons)
 			}
 
 			svGroup := authGroup.Group("/sv")
@@ -55,6 +56,7 @@ func main() {
 				svGroup.GET("/moves", handler.GetSVMoves)
 				svGroup.POST("/bred-pokemons", handler.PostSVBredPokemons)
 				svGroup.GET("/bred-pokemons", handler.GetSVBredPokemons)
+				svGroup.PUT("/bred-pokemons", handler.PutSVBredPokemons)
 			}
 		}
 	}

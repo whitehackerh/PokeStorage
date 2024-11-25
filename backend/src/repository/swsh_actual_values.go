@@ -8,6 +8,7 @@ import (
 type (
 	ISwShActualValuesRepository interface {
 		Create(*gorm.DB, model.SwShActualValues) error
+		Update(*gorm.DB, model.SwShActualValues) error
 	}
 	SwShActualValuesRepository struct {
 		Db *gorm.DB
@@ -22,6 +23,14 @@ func NewSwShActualValuesRepository(db *gorm.DB) ISwShActualValuesRepository {
 
 func (s *SwShActualValuesRepository) Create(tx *gorm.DB, model model.SwShActualValues) error {
 	result := tx.Create(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *SwShActualValuesRepository) Update(tx *gorm.DB, model model.SwShActualValues) error {
+	result := tx.Updates(&model)
 	if result.Error != nil {
 		return result.Error
 	}

@@ -73,3 +73,14 @@ export const getBredPokemons = async () : Promise<any> => {
         throw error;
     }
 }
+
+export const putBredPokemons = async (bredPokemon: any) : Promise<void> => {
+    try {
+        await withTokenRequest.put('/sv/bred-pokemons', bredPokemon, {
+            headers: getRequestHeaders()
+        });
+    } catch (error) {
+        console.log('error');
+        throw error;
+    }
+}
