@@ -9,6 +9,7 @@ type (
 	ISVActualValuesRepository interface {
 		Create(*gorm.DB, model.SVActualValues) error
 		Update(*gorm.DB, model.SVActualValues) error
+		Delete(*gorm.DB, string) error
 	}
 	SVActualValuesRepository struct {
 		Db *gorm.DB
@@ -31,6 +32,14 @@ func (s *SVActualValuesRepository) Create(tx *gorm.DB, model model.SVActualValue
 
 func (s *SVActualValuesRepository) Update(tx *gorm.DB, model model.SVActualValues) error {
 	result := tx.Updates(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *SVActualValuesRepository) Delete(tx *gorm.DB, id string) error {
+	result := tx.Where("id = ?", id).Delete(model.SVActualValues{})
 	if result.Error != nil {
 		return result.Error
 	}

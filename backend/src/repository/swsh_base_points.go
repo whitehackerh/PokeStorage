@@ -9,6 +9,7 @@ type (
 	ISwShBasePointsRepository interface {
 		Create(*gorm.DB, model.SwShBasePoints) error
 		Update(*gorm.DB, model.SwShBasePoints) error
+		Delete(*gorm.DB, string) error
 	}
 	SwShBasePointsRepository struct {
 		Db *gorm.DB
@@ -31,6 +32,14 @@ func (s *SwShBasePointsRepository) Create(tx *gorm.DB, model model.SwShBasePoint
 
 func (s *SwShBasePointsRepository) Update(tx *gorm.DB, model model.SwShBasePoints) error {
 	result := tx.Updates(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *SwShBasePointsRepository) Delete(tx *gorm.DB, id string) error {
+	result := tx.Where("id = ?", id).Delete(model.SwShBasePoints{})
 	if result.Error != nil {
 		return result.Error
 	}
