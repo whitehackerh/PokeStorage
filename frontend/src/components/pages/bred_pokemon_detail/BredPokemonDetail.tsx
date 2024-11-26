@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { deleteBredPokemons } from '../../../api/BredPokemons';
 import { Title } from '../../../entity/Title';
 import { IndividualValues } from '../../../entity/IndividualValues';
 import { SVBredPokemon } from '../../../entity/SVBredPokemon';
 import { Box, Typography, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button } from '@mui/material';
+import ConfirmDialog from '../../modules/dialogs/ConfirmDialog';
 
 const BredPokemonDetail = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [title, setTitle] = useState<Title | null>(null);
     const [bredPokemon, setBredPokemon] = useState<SVBredPokemon | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     useEffect(() => {
         if (location.state && location.state.title && location.state.bredPokemon) {
@@ -21,6 +24,22 @@ const BredPokemonDetail = () => {
     const handleEditButtonClick = () => {
         navigate('/register-pokemon', { state: { title: title, bredPokemon: bredPokemon } });
     }
+
+    const handleDeleteButtonClick = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleDialogClose = async (isConfirmed: boolean) => {
+        setIsDialogOpen(false);
+        if (isConfirmed && title && bredPokemon) {
+            try {
+                await deleteBredPokemons(bredPokemon.bredPokemon.id);
+                navigate('/bred-pokemon-list', { state: { title: title } });
+            } catch (error) {
+                console.error('Failed to delete bred Pokémon:', error);
+            }
+        }
+    };
 
     if (!title || !bredPokemon) {
         return <Typography>Loading...</Typography>;
@@ -46,7 +65,18 @@ const BredPokemonDetail = () => {
 
     return (
         <>
-            <Button variant="contained" style={{ marginLeft: "630px", marginTop: "10px" }} onClick={handleEditButtonClick}>Edit</Button>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <Button variant="contained" sx={{ marginRight: 2 }} onClick={handleEditButtonClick}>
+                    Edit
+                </Button>
+                <Button
+                    variant="contained"
+                    sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: 'darkred' } }}
+                    onClick={handleDeleteButtonClick}
+                >
+                    Delete
+                </Button>
+            </Box>
             <Box sx={{ mt: 2, mx: 'auto', maxWidth: 600, p: 2, border: 1, borderRadius: 2, boxShadow: 2 }}>
                 <Typography variant="h4" align="center">
                     {bredPokemon.bredPokemon.name} {bredPokemon.bredPokemon.formeName && `(${bredPokemon.bredPokemon.formeName})`}
@@ -108,6 +138,13 @@ const BredPokemonDetail = () => {
                     </Typography>
                 </Box>
             </Box>
+
+            <ConfirmDialog
+                text=""
+                message="Are you sure you want to delete this bred Pokémon?"
+                callback={handleDialogClose}
+                open={isDialogOpen}
+            />
         </>
     );
 };

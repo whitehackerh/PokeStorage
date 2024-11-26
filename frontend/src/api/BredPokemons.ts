@@ -84,3 +84,14 @@ export const putBredPokemons = async (bredPokemon: any) : Promise<void> => {
         throw error;
     }
 }
+
+export const deleteBredPokemons = async (id: string) : Promise<void> => {
+    try {
+        await withTokenRequest.delete(`/sv/bred-pokemons/${id}`, {
+            headers: getRequestHeaders()
+        });
+    } catch (error) {
+        console.log('error');
+        throw error;
+    }
+}
