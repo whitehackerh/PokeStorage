@@ -17,12 +17,11 @@ func GetSVBredPokemons(c *gin.Context) {
 
 	claims := *c.MustGet("claims").(*middleware.Claims)
 
-	db := infrastructure.ConnectDb()
 	uc := usecase.NewGetSVBredPokemonsInteractor(
 		service.NewSVBredPokemonService(
 			service.NewBredPokemonService(),
 		),
-		repository.NewSVBredPokemonRepository(db),
+		repository.NewSVBredPokemonRepository(infrastructure.ConnectDb()),
 		presenter.NewGetSVBredPokemonsPresenter(),
 	)
 

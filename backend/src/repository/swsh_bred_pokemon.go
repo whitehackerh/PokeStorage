@@ -10,6 +10,8 @@ type (
 		Create(*gorm.DB, model.SwShBredPokemon) error
 		FetchByUserId(string) ([]model.SwShBredPokemonRelation, error)
 		Update(*gorm.DB, model.SwShBredPokemon) error
+		FindById(string) (model.SwShBredPokemon, error)
+		Delete(*gorm.DB, string) error
 	}
 	SwShBredPokemonRepository struct {
 		Db *gorm.DB
@@ -71,6 +73,23 @@ func (s *SwShBredPokemonRepository) FetchByUserId(userId string) ([]model.SwShBr
 
 func (s *SwShBredPokemonRepository) Update(tx *gorm.DB, model model.SwShBredPokemon) error {
 	result := tx.Updates(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *SwShBredPokemonRepository) FindById(id string) (model.SwShBredPokemon, error) {
+	var bredPokemon model.SwShBredPokemon
+	result := s.Db.Where("id = ?", id).Find(&bredPokemon)
+	if result.Error != nil {
+		return model.SwShBredPokemon{}, result.Error
+	}
+	return bredPokemon, result.Error
+}
+
+func (s *SwShBredPokemonRepository) Delete(tx *gorm.DB, id string) error {
+	result := tx.Where("id = ?", id).Delete(model.SwShBredPokemon{})
 	if result.Error != nil {
 		return result.Error
 	}
