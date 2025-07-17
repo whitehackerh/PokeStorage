@@ -6,6 +6,9 @@ import darkIcon from '../../assets/img/type/dark.png';
 import ghostIcon from '../../assets/img/type/ghost.png';
 import psychicIcon from '../../assets/img/type/psychic.png';
 import iceIcon from '../../assets/img/type/ice.png';
+import fireIcon from '../../assets/img/type/fire.png';
+import flyingIcon from '../../assets/img/type/flying.png';
+import grassIcon from '../../assets/img/type/grass.png';
 
 export const typeIcons: Record<string, string> = {
     electric: electricIcon,
@@ -15,5 +18,8 @@ export const typeIcons: Record<string, string> = {
     dark: darkIcon,
     ghost: ghostIcon,
     psychic: psychicIcon,
-    ice: iceIcon
+    ice: iceIcon,
+    fire: fireIcon,
+    flying: flyingIcon,
+    grass: grassIcon
 };
