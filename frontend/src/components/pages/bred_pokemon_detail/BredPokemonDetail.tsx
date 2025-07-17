@@ -134,7 +134,7 @@ const BredPokemonDetail = () => {
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', mt: 1 }}>
                     <Typography sx={{ fontWeight: 'bold', mr: 1 }}>Note:</Typography>
                     <Typography sx={{ whiteSpace: 'pre-wrap' }}>
-                        {bredPokemon.bredPokemon.note || 'None'}
+                        {bredPokemon.bredPokemon.note || ''}
                     </Typography>
                 </Box>
             </Box>
