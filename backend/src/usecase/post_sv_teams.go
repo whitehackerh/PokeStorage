@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"fmt"
-
 	"github.com/whitehackerh/PokeStorage/src/api_schema"
 	"github.com/whitehackerh/PokeStorage/src/converter"
 	"github.com/whitehackerh/PokeStorage/src/domain/service"
@@ -42,9 +40,7 @@ func NewPostSVTeamsInteractor(
 
 func (interactor *PostSVTeamsInteractor) Execute(input PostSVTeamsInput, userId string, tx *gorm.DB) (PostSVTeamsOutput, error) {
 	team := interactor.service.MakeEntityFromApiSchema(input.Team, userId)
-	fmt.Println("team:", team)
-	a := converter.SVTeamEntityToModel(team)
-	fmt.Println("a:", a)
+
 	if err := interactor.repository.Create(
 		tx,
 		converter.SVTeamEntityToModel(team),
