@@ -9,6 +9,13 @@ import iceIcon from '../../assets/img/type/ice.png';
 import fireIcon from '../../assets/img/type/fire.png';
 import flyingIcon from '../../assets/img/type/flying.png';
 import grassIcon from '../../assets/img/type/grass.png';
+import rockIcon from '../../assets/img/type/rock.png';
+import fightingIcon from '../../assets/img/type/fighting.png';
+import groundIcon from '../../assets/img/type/ground.png';
+import poisonIcon from '../../assets/img/type/poison.png';
+import dragonIcon from '../../assets/img/type/dragon.png';
+import waterIcon from '../../assets/img/type/water.png';
+import bugIcon from '../../assets/img/type/bug.png';
 
 export const typeIcons: Record<string, string> = {
     electric: electricIcon,
@@ -21,5 +28,12 @@ export const typeIcons: Record<string, string> = {
     ice: iceIcon,
     fire: fireIcon,
     flying: flyingIcon,
-    grass: grassIcon
+    grass: grassIcon,
+    rock: rockIcon,
+    fighting: fightingIcon,
+    ground: groundIcon,
+    poison: poisonIcon,
+    dragon: dragonIcon,
+    water: waterIcon,
+    bug: bugIcon,
 };
