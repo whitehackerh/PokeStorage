@@ -55,6 +55,7 @@ const BredPokemonListPage = () => {
                         )}
                     <p>{pokemon.bredPokemon.nature.name}</p>
                     <p>{pokemon.bredPokemon.ability.name}</p>
+                    <p>{pokemon.bredPokemon.actualValues.hitPoints} / {pokemon.bredPokemon.actualValues.attack} / {pokemon.bredPokemon.actualValues.defense} / {pokemon.bredPokemon.actualValues.specialAttack} / {pokemon.bredPokemon.actualValues.specialDefense} / {pokemon.bredPokemon.actualValues.speed}</p>
                     <div className="moves">
                         <ul>
                             {pokemon.bredPokemon.moves.map((move) => (
