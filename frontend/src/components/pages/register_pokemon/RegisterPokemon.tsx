@@ -215,7 +215,6 @@ const RegisterPokemon = () => {
             && selectedGender
             && selectedAbility
             && selectedNature
-            && selectedItem
             && selectedTeraType
         ) {
             return {

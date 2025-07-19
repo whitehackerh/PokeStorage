@@ -1,4 +1,3 @@
-import { TitleEnum } from '../enum/Title';
 import { SVBredPokemon } from '../entity/SVBredPokemon';
 import { NewGenderFromJson } from '../entity/Gender';
 import { NewTypeFromJson, Type } from '../entity/Type';

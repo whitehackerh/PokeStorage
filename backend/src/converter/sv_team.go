@@ -1,0 +1,30 @@
+package converter
+
+import (
+	"github.com/whitehackerh/PokeStorage/src/domain/entity"
+	"github.com/whitehackerh/PokeStorage/src/enum"
+	"github.com/whitehackerh/PokeStorage/src/model"
+	"github.com/whitehackerh/PokeStorage/src/util"
+)
+
+func SVTeamEntityToModel(team entity.SVTeam) model.SVTeam {
+	bredPokemonIds := make([]*string, enum.MaxTeamSize)
+	for i, bredPokemon := range team.BredPokemons() {
+		if bredPokemon != nil {
+			bredPokemonIds[i] = util.StringToPointer(bredPokemon.Id())
+		}
+	}
+
+	return model.SVTeam{
+		Id:             team.Id(),
+		UserId:         team.UserId(),
+		Name:           team.Name(),
+		BredPokemon1Id: bredPokemonIds[0],
+		BredPokemon2Id: bredPokemonIds[1],
+		BredPokemon3Id: bredPokemonIds[2],
+		BredPokemon4Id: bredPokemonIds[3],
+		BredPokemon5Id: bredPokemonIds[4],
+		BredPokemon6Id: bredPokemonIds[5],
+		Note:           team.Note(),
+	}
+}

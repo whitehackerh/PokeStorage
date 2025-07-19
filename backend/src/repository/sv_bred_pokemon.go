@@ -73,7 +73,7 @@ func (s *SVBredPokemonRepository) FetchByUserId(userId string) ([]model.SVBredPo
 }
 
 func (s *SVBredPokemonRepository) Update(tx *gorm.DB, model model.SVBredPokemon) error {
-	result := tx.Updates(&model)
+	result := tx.Select("*").Omit("CreatedAt", "DeletedAt").Updates(&model)
 	if result.Error != nil {
 		return result.Error
 	}

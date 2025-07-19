@@ -22,6 +22,10 @@ const Menu = () => {
     const handleRegisterPokemonClick = (title: Title) => {
         navigate('/register-pokemon', { state: { title: title }});
     }
+
+    const handleRegisterTeamClick = (title: Title) => {
+        navigate('/register-team', { state: { title: title }});
+    }
     
     if (!title) {
         return <div>Loading...</div>;
@@ -49,7 +53,7 @@ const Menu = () => {
                             Team List
                         </Typography>
                     </ListItem>
-                    <ListItem style={{ justifyContent: 'center', backgroundColor: '#f0f0f0', margin: '10px 0', borderRadius: '8px' }}>
+                    <ListItem onClick={() => handleRegisterTeamClick(title)} style={{ justifyContent: 'center', backgroundColor: '#f0f0f0', margin: '10px 0', borderRadius: '8px' }}>
                         <Typography variant="body1" style={{ fontSize: '1.5rem' }}>
                             Register Team
                         </Typography>
