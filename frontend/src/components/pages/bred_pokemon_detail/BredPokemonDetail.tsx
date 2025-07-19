@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { deleteBredPokemons } from '../../../api/BredPokemons';
 import { Title } from '../../../entity/Title';
-import { IndividualValues } from '../../../entity/IndividualValues';
 import { SVBredPokemon } from '../../../entity/SVBredPokemon';
 import { Box, Typography, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button } from '@mui/material';
 import ConfirmDialog from '../../modules/dialogs/ConfirmDialog';
+import { stats, statDisplayNames } from '../../../common/stats';
 
 const BredPokemonDetail = () => {
     const location = useLocation();
@@ -44,24 +44,6 @@ const BredPokemonDetail = () => {
     if (!title || !bredPokemon) {
         return <Typography>Loading...</Typography>;
     }
-
-    const stats: (keyof Omit<IndividualValues, 'id'>)[] = [
-        'hitPoints',
-        'attack',
-        'defense',
-        'specialAttack',
-        'specialDefense',
-        'speed',
-    ];
-
-    const statDisplayNames: Record<keyof Omit<IndividualValues, 'id'>, string> = {
-        hitPoints: 'Hit Points',
-        attack: 'Attack',
-        defense: 'Defense',
-        specialAttack: 'Special Attack',
-        specialDefense: 'Special Defense',
-        speed: 'Speed',
-    };
 
     return (
         <>

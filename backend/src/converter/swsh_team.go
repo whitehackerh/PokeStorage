@@ -2,14 +2,17 @@ package converter
 
 import (
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
+	"github.com/whitehackerh/PokeStorage/src/enum"
 	"github.com/whitehackerh/PokeStorage/src/model"
 	"github.com/whitehackerh/PokeStorage/src/util"
 )
 
 func SwShTeamEntityToModel(team entity.SwShTeam) model.SwShTeam {
-	bredPokemonIds := []*string{nil, nil, nil, nil, nil, nil}
+	bredPokemonIds := make([]*string, enum.MaxTeamSize)
 	for i, bredPokemon := range team.BredPokemons() {
-		bredPokemonIds[i] = util.StringToPointer(bredPokemon.Id())
+		if bredPokemon != nil {
+			bredPokemonIds[i] = util.StringToPointer(bredPokemon.Id())
+		}
 	}
 
 	return model.SwShTeam{

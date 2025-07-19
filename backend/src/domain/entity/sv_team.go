@@ -2,12 +2,12 @@ package entity
 
 type SVTeam struct {
 	Team
-	bredPokemons []SVBredPokemon
+	bredPokemons []*SVBredPokemon
 }
 
 func NewSVTeam(
 	team Team,
-	bredPokemons []SVBredPokemon,
+	bredPokemons []*SVBredPokemon,
 ) SVTeam {
 	return SVTeam{
 		team,
@@ -15,6 +15,6 @@ func NewSVTeam(
 	}
 }
 
-func (st *SVTeam) BredPokemons() []SVBredPokemon {
+func (st *SVTeam) BredPokemons() []*SVBredPokemon {
 	return st.bredPokemons
 }
