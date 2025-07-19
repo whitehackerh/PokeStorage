@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"errors"
+
 	"github.com/whitehackerh/PokeStorage/src/repository"
 	"gorm.io/gorm"
 )
@@ -18,6 +20,7 @@ type (
 	DeleteSVBredPokemonsOutput     struct{}
 	DeleteSVBredPokemonsInteractor struct {
 		bredRepo       repository.ISVBredPokemonRepository
+		teamRepo       repository.ISVTeamRepository
 		individualRepo repository.ISVIndividualValuesRepository
 		baseRepo       repository.ISVBasePointsRepository
 		actualRepo     repository.ISVActualValuesRepository
@@ -27,6 +30,7 @@ type (
 
 func NewDeleteSVBredPokemonsInteractor(
 	bredRepo repository.ISVBredPokemonRepository,
+	teamRepo repository.ISVTeamRepository,
 	individualRepo repository.ISVIndividualValuesRepository,
 	baseRepo repository.ISVBasePointsRepository,
 	actualRepo repository.ISVActualValuesRepository,
@@ -34,6 +38,7 @@ func NewDeleteSVBredPokemonsInteractor(
 ) DeleteSVBredPokemonsUseCase {
 	return &DeleteSVBredPokemonsInteractor{
 		bredRepo:       bredRepo,
+		teamRepo:       teamRepo,
 		individualRepo: individualRepo,
 		baseRepo:       baseRepo,
 		actualRepo:     actualRepo,
@@ -46,6 +51,13 @@ func (interactor *DeleteSVBredPokemonsInteractor) Execute(input DeleteSVBredPoke
 	if err != nil {
 		return interactor.presenter.Output(), err
 	}
+
+	if exists, err := interactor.teamRepo.ExistsBredPokemon(bredPokemon.Id); err != nil {
+		return interactor.presenter.Output(), err
+	} else if exists {
+		return interactor.presenter.Output(), errors.New("this Pokémon is registered with the team and cannot be deleted")
+	}
+
 	if err := interactor.individualRepo.Delete(tx, bredPokemon.IndividualValuesId); err != nil {
 		return interactor.presenter.Output(), err
 	}

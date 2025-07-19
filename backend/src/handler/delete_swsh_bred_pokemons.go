@@ -20,6 +20,7 @@ func DeleteSwShBredPokemons(c *gin.Context) {
 	db := infrastructure.ConnectDb()
 	uc := usecase.NewDeleteSwShBredPokemonsInteractor(
 		repository.NewSwShBredPokemonRepository(db),
+		repository.NewSwShTeamRepository(db),
 		repository.NewSwShIndividualValuesRepository(db),
 		repository.NewSwShBasePointsRepository(db),
 		repository.NewSwShActualValuesRepository(db),
