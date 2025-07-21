@@ -4,20 +4,24 @@ import (
 	"github.com/whitehackerh/PokeStorage/src/api_schema"
 	"github.com/whitehackerh/PokeStorage/src/domain/entity"
 	"github.com/whitehackerh/PokeStorage/src/enum"
+	"github.com/whitehackerh/PokeStorage/src/model"
 )
 
 type (
 	ISVTeamService interface {
 		MakeEntityFromApiSchema(api_schema.PostPutTeam, string) entity.SVTeam
+		MakeEntityFromModel(model.SVTeamRelation) entity.SVTeam
 	}
 	SVTeamService struct {
-		teamService ITeamService
+		teamService          ITeamService
+		svBredPokemonService ISVBredPokemonService
 	}
 )
 
-func NewSVTeamService(teamService ITeamService) ISVTeamService {
+func NewSVTeamService(teamService ITeamService, svBredPokemonService ISVBredPokemonService) ISVTeamService {
 	return &SVTeamService{
-		teamService: teamService,
+		teamService:          teamService,
+		svBredPokemonService: svBredPokemonService,
 	}
 }
 
@@ -56,6 +60,56 @@ func (s *SVTeamService) MakeEntityFromApiSchema(schema api_schema.PostPutTeam, u
 	}
 	return entity.NewSVTeam(
 		s.teamService.MakeEntityFromApiSchema(schema, userId),
+		bredPokemons,
+	)
+}
+
+func (s *SVTeamService) MakeEntityFromModel(model model.SVTeamRelation) entity.SVTeam {
+	bredPokemons := make([]*entity.SVBredPokemon, enum.MaxTeamSize)
+	if model.BredPokemon1 == nil {
+		bredPokemons[0] = nil
+	} else {
+		bredPokemon := s.svBredPokemonService.MakeEntityFromModel(*model.BredPokemon1)
+		bredPokemons[0] = &bredPokemon
+	}
+	if model.BredPokemon2 == nil {
+		bredPokemons[1] = nil
+	} else {
+		bredPokemon := s.svBredPokemonService.MakeEntityFromModel(*model.BredPokemon2)
+		bredPokemons[1] = &bredPokemon
+	}
+	if model.BredPokemon3 == nil {
+		bredPokemons[2] = nil
+	} else {
+		bredPokemon := s.svBredPokemonService.MakeEntityFromModel(*model.BredPokemon3)
+		bredPokemons[2] = &bredPokemon
+	}
+	if model.BredPokemon4 == nil {
+		bredPokemons[3] = nil
+	} else {
+		bredPokemon := s.svBredPokemonService.MakeEntityFromModel(*model.BredPokemon4)
+		bredPokemons[3] = &bredPokemon
+	}
+	if model.BredPokemon5 == nil {
+		bredPokemons[4] = nil
+	} else {
+		bredPokemon := s.svBredPokemonService.MakeEntityFromModel(*model.BredPokemon5)
+		bredPokemons[4] = &bredPokemon
+	}
+	if model.BredPokemon6 == nil {
+		bredPokemons[5] = nil
+	} else {
+		bredPokemon := s.svBredPokemonService.MakeEntityFromModel(*model.BredPokemon6)
+		bredPokemons[5] = &bredPokemon
+	}
+
+	return entity.NewSVTeam(
+		entity.NewTeam(
+			model.Id,
+			model.UserId,
+			model.Name,
+			model.Note,
+		),
 		bredPokemons,
 	)
 }
