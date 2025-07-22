@@ -10,16 +10,15 @@ import (
 	"github.com/whitehackerh/PokeStorage/src/presenter"
 	"github.com/whitehackerh/PokeStorage/src/repository"
 	"github.com/whitehackerh/PokeStorage/src/usecase"
-	"gorm.io/gorm"
 )
 
-func PostSVTeams(c *gin.Context) {
+func GetSVTeams(c *gin.Context) {
 	var url = "/sv/teams"
 
 	claims := *c.MustGet("claims").(*middleware.Claims)
 
 	db := infrastructure.ConnectDb()
-	uc := usecase.NewPostSVTeamsInteractor(
+	uc := usecase.NewGetSVTeamsInteractor(
 		service.NewSVTeamService(
 			service.NewTeamService(),
 			service.NewSVBredPokemonService(
@@ -27,23 +26,17 @@ func PostSVTeams(c *gin.Context) {
 			),
 		),
 		repository.NewSVTeamRepository(db),
-		presenter.NewPostSVTeamsPresenter(),
+		repository.NewSVBredPokemonRepository(db),
+		presenter.NewGetSVTeamsPresenter(),
 	)
 
-	input := usecase.PostSVTeamsInput{}
-	if err := c.ShouldBindJSON(&input); err != nil {
+	output, err := uc.Execute(usecase.GetSVTeamsInput{
+		UserId: claims.UserId,
+	})
+	if err != nil {
 		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
 		return
 	}
 
-	infrastructure.WithTransaction(db, c, func(tx *gorm.DB) error {
-		output, err := uc.Execute(input, claims.UserId, tx)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
-			return err
-		}
-
-		c.JSON(201, presenter.NewCommonPresenter(url, output))
-		return nil
-	})
+	c.JSON(200, presenter.NewCommonPresenter(url, output))
 }

@@ -10,40 +10,33 @@ import (
 	"github.com/whitehackerh/PokeStorage/src/presenter"
 	"github.com/whitehackerh/PokeStorage/src/repository"
 	"github.com/whitehackerh/PokeStorage/src/usecase"
-	"gorm.io/gorm"
 )
 
-func PostSVTeams(c *gin.Context) {
-	var url = "/sv/teams"
+func GetSwShTeams(c *gin.Context) {
+	var url = "/swsh/teams"
 
 	claims := *c.MustGet("claims").(*middleware.Claims)
 
 	db := infrastructure.ConnectDb()
-	uc := usecase.NewPostSVTeamsInteractor(
-		service.NewSVTeamService(
+	uc := usecase.NewGetSwShTeamsInteractor(
+		service.NewSwShTeamService(
 			service.NewTeamService(),
-			service.NewSVBredPokemonService(
+			service.NewSwShBredPokemonService(
 				service.NewBredPokemonService(),
 			),
 		),
-		repository.NewSVTeamRepository(db),
-		presenter.NewPostSVTeamsPresenter(),
+		repository.NewSwShTeamRepository(db),
+		repository.NewSwShBredPokemonRepository(db),
+		presenter.NewGetSwShTeamsPresenter(),
 	)
 
-	input := usecase.PostSVTeamsInput{}
-	if err := c.ShouldBindJSON(&input); err != nil {
+	output, err := uc.Execute(usecase.GetSwShTeamsInput{
+		UserId: claims.UserId,
+	})
+	if err != nil {
 		c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
 		return
 	}
 
-	infrastructure.WithTransaction(db, c, func(tx *gorm.DB) error {
-		output, err := uc.Execute(input, claims.UserId, tx)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, presenter.NewCommonPresenter(url, err.Error()))
-			return err
-		}
-
-		c.JSON(201, presenter.NewCommonPresenter(url, output))
-		return nil
-	})
+	c.JSON(200, presenter.NewCommonPresenter(url, output))
 }

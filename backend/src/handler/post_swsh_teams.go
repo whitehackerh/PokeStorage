@@ -22,6 +22,9 @@ func PostSwShTeams(c *gin.Context) {
 	uc := usecase.NewPostSwShTeamsInteractor(
 		service.NewSwShTeamService(
 			service.NewTeamService(),
+			service.NewSwShBredPokemonService(
+				service.NewBredPokemonService(),
+			),
 		),
 		repository.NewSwShTeamRepository(db),
 		presenter.NewPostSwShTeamsPresenter(),

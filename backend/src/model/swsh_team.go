@@ -17,3 +17,17 @@ type SwShTeam struct {
 	UpdatedAt      *time.Time `gorm:"autoUpdateTime"`
 	DeletedAt      *time.Time `gorm:"index"`
 }
+
+type SwShTeamRelation struct {
+	SwShTeam
+	BredPokemon1 *SwShBredPokemonRelation `gorm:"foreignKey:BredPokemon1Id;references:Id"`
+	BredPokemon2 *SwShBredPokemonRelation `gorm:"foreignKey:BredPokemon2Id;references:Id"`
+	BredPokemon3 *SwShBredPokemonRelation `gorm:"foreignKey:BredPokemon3Id;references:Id"`
+	BredPokemon4 *SwShBredPokemonRelation `gorm:"foreignKey:BredPokemon4Id;references:Id"`
+	BredPokemon5 *SwShBredPokemonRelation `gorm:"foreignKey:BredPokemon5Id;references:Id"`
+	BredPokemon6 *SwShBredPokemonRelation `gorm:"foreignKey:BredPokemon6Id;references:Id"`
+}
+
+func (s *SwShTeamRelation) TableName() string {
+	return "swsh_teams"
+}
