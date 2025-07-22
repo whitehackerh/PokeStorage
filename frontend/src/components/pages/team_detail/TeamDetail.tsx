@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { deleteTeams } from '../../../api/Teams';
 import { Title } from '../../../entity/Title';
 import { SVTeam } from '../../../entity/SVTeam';
 import {
@@ -7,13 +8,14 @@ import {
   TableCell, Typography, Button
 } from '@mui/material';
 import { stats, statDisplayNames } from '../../../common/stats';
-
+import ConfirmDialog from '../../modules/dialogs/ConfirmDialog';
 
 const TeamDetail = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [title, setTitle] = useState<Title | null>(null);
     const [team, setTeam] = useState<SVTeam | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     
     useEffect(() => {
         if (location.state && location.state.title && location.state.team) {
@@ -26,6 +28,22 @@ const TeamDetail = () => {
         navigate('/register-team', { state: { title: title, team: team } });
     }
 
+    const handleDeleteButtonClick = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleDialogClose = async (isConfirmed: boolean) => {
+        setIsDialogOpen(false);
+        if (isConfirmed && title && team) {
+            try {
+                await deleteTeams(team.team.id);
+                navigate('/team-list', { state: { title: title } });
+            } catch (error) {
+                console.error('Failed to delete Team:', error);
+            }
+        }
+    };
+
     if (!title || !team) {
         return <Typography>Loading...</Typography>
     }
@@ -33,7 +51,18 @@ const TeamDetail = () => {
     return (
         <>
             <div>
-                <Button variant="contained" style={{ marginLeft: "630px", marginTop: "10px" }} onClick={handleEditButtonClick}>Edit</Button>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                    <Button variant="contained" sx={{ marginRight: 2 }} onClick={handleEditButtonClick}>
+                        Edit
+                    </Button>
+                    <Button
+                        variant="contained"
+                        sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: 'darkred' } }}
+                        onClick={handleDeleteButtonClick}
+                    >
+                        Delete
+                    </Button>
+                </Box>
                 <Box sx={{ maxWidth: 1800, mx: 'auto', mt: 4 }}>
                     <div className="team-header">
                         <h1>{team.team.name}</h1>
@@ -129,6 +158,13 @@ const TeamDetail = () => {
                     </Box>
                 </Box>
             </div>
+
+            <ConfirmDialog
+                text=""
+                message="Are you sure you want to delete this team?"
+                callback={handleDialogClose}
+                open={isDialogOpen}
+            />
         </>
     )
 }

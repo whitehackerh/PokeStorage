@@ -11,6 +11,8 @@ type (
 		ExistsBredPokemon(string) (bool, error)
 		FetchByUserId(string) ([]model.SwShTeamRelation, error)
 		Update(*gorm.DB, model.SwShTeam) error
+		FindById(string) (model.SwShTeam, error)
+		Delete(*gorm.DB, string) error
 	}
 	SwShTeamRepository struct {
 		Db *gorm.DB
@@ -231,6 +233,23 @@ func (s *SwShTeamRepository) FetchByUserId(userId string) ([]model.SwShTeamRelat
 
 func (s *SwShTeamRepository) Update(tx *gorm.DB, model model.SwShTeam) error {
 	result := tx.Updates(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *SwShTeamRepository) FindById(id string) (model.SwShTeam, error) {
+	var team model.SwShTeam
+	result := s.Db.Where("id = ?", id).Find(&team)
+	if result.Error != nil {
+		return model.SwShTeam{}, result.Error
+	}
+	return team, result.Error
+}
+
+func (s *SwShTeamRepository) Delete(tx *gorm.DB, id string) error {
+	result := tx.Where("id = ?", id).Delete(model.SwShTeam{})
 	if result.Error != nil {
 		return result.Error
 	}

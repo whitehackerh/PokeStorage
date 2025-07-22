@@ -98,3 +98,14 @@ export const putTeams = async (team: any): Promise<void> => {
         throw error;
     }
 }
+
+export const deleteTeams = async (id: string) : Promise<void> => {
+    try {
+        await withTokenRequest.delete(`/sv/teams/${id}`, {
+            headers: getRequestHeaders()
+        });
+    } catch (error) {
+        console.log('error');
+        throw error;
+    }
+}
