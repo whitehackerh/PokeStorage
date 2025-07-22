@@ -8,11 +8,14 @@ import { getBredPokemons } from '../../../api/BredPokemons';
 import SelectPokemonGrid from './SelectPokemonGrid';
 import SelectPokemonDialog from './SelectPokemonDialog';
 import { toSnakeCase } from '../../../util/convert';
-import { postTeams } from '../../../api/Teams';
+import { postTeams, putTeams } from '../../../api/Teams';
+import { SVTeam } from '../../../entity/SVTeam';
 
 const RegisterTeam = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const [team, setTeam] = useState<SVTeam | null>(null);
     const [title, setTitle] = useState<Title | null>(null);
     const [bredPokemons, setBredPokemons] = useState<SVBredPokemon[]>([]);
     const [activeSlot, setActiveSlot] = useState<number | null>(null);
@@ -24,6 +27,10 @@ const RegisterTeam = () => {
     useEffect(() => {
         if (location.state && location.state.title) {
             setTitle(location.state.title);
+        }
+        if (location.state && location.state.team) {
+            setIsEditMode(true);
+            setTeam(location.state.team);
         }
     }, [location.state]);
 
@@ -41,6 +48,14 @@ const RegisterTeam = () => {
             fetch(title);
         }
     }, [title]);
+
+    useEffect(() => {
+        if (team) {
+            setName(team.team.name);
+            setSelectedPokemons(team.bredPokemons);
+            setNote(team.team.note);
+        }
+    }, [team])
 
     const handleSlotClick = (index: number) => {
         setActiveSlot(index);
@@ -65,8 +80,13 @@ const RegisterTeam = () => {
     const handleRegisterClick = async () => {
         try {
             if (name) {
-                const madeTeam = makeTeam();
-                await postTeams(toSnakeCase(madeTeam));
+                if (!isEditMode) {
+                    const madeTeam = makeTeam();
+                    await postTeams(toSnakeCase(madeTeam));
+                } else if (isEditMode && team) {
+                    const madeTeam = makeTeam(team.team.id);
+                    await putTeams(toSnakeCase(madeTeam));
+                }
             }
             navigate('/team-list', { state: { title: title } });
         } catch (error) {
