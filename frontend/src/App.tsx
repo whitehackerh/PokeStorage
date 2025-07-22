@@ -19,6 +19,8 @@ import BredPokemonList from "./components/pages/bred_pokemon_list/BredPokemonLis
 import BredPokemonDetail from "./components/pages/bred_pokemon_detail/BredPokemonDetail";
 import RegisterPokemon from "./components/pages/register_pokemon/RegisterPokemon";
 import RegisterTeam from "./components/pages/register_team/RegisterTeam";
+import TeamList from "./components/pages/team_list/TeamList";
+import TeamDetail from "./components/pages/team_detail/TeamDetail";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
@@ -60,6 +62,8 @@ function App() {
             <Route path="/bred-pokemon-detail" element={<BredPokemonDetail />} />
             <Route path="/register-pokemon" element={<RegisterPokemon />} />
             <Route path="/register-team" element={<RegisterTeam />} />
+            <Route path="/team-list" element={<TeamList />} />
+            <Route path="/team-detail" element={<TeamDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

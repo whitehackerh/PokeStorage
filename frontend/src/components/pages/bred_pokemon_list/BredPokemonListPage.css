@@ -1,6 +1,6 @@
 .pokemon-list {
     display: grid;
-    grid-template-columns: repeat(6, 1fr); /* 1行に6列 */
+    grid-template-columns: repeat(6, 1fr);
     gap: 16px;
     padding: 16px;
     background-color: #f8f8f8;
@@ -13,9 +13,9 @@
     padding: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: left;
-    width: 100%; /* カードの幅を均一に */
-    max-width: 240px; /* カード幅を広げる */
-    overflow: hidden; /* カード内の内容が溢れないように */
+    width: 100%;
+    max-width: 240px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
@@ -37,14 +37,14 @@
 
 .pokemon-types {
     display: flex;
-    gap: 4px;  /* タイプの画像間の隙間を減らす */
-    margin-top: 4px;  /* タイプ画像の上部の隙間を減らす */
+    gap: 4px;
+    margin-top: 4px;
 }
 
 .type-icon {
-    width: 60px;  /* タイプのアイコンのサイズ */
+    width: 60px;
     height: 60px;
-    object-fit: contain; /* 縦横比を保ちながら収める */
+    object-fit: contain;
 }
 
 .held-item {

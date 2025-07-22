@@ -68,6 +68,7 @@ const RegisterTeam = () => {
                 const madeTeam = makeTeam();
                 await postTeams(toSnakeCase(madeTeam));
             }
+            navigate('/team-list', { state: { title: title } });
         } catch (error) {
             console.error(error);
         }

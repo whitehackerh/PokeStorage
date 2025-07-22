@@ -1,0 +1,99 @@
+.team-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.team-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+}
+
+.team-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.team-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.bred-pokemons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pokemon-card {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 12px;
+  text-align: left;
+}
+
+.pokemon-card:empty {
+  border: none;
+  background: transparent;
+}
+
+.pokemon-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.held-item {
+  margin: 8px 0;
+  font-style: italic;
+  color: #666;
+}
+
+.pokemon-card p {
+  margin: 4px 0;
+  color: #555;
+}
+
+.moves {
+  margin-top: 8px;
+}
+
+.moves ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.moves li {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-height: 1.5em;
+}
