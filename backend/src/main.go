@@ -50,6 +50,7 @@ func main() {
 				swshGroup.DELETE("/bred-pokemons/:id", handler.DeleteSwShBredPokemons)
 				swshGroup.POST("/teams", handler.PostSwShTeams)
 				swshGroup.GET("/teams", handler.GetSwShTeams)
+				swshGroup.PUT("/teams", handler.PutSwShTeams)
 			}
 
 			svGroup := authGroup.Group("/sv")
@@ -63,6 +64,7 @@ func main() {
 				svGroup.DELETE("/bred-pokemons/:id", handler.DeleteSVBredPokemons)
 				svGroup.POST("/teams", handler.PostSVTeams)
 				svGroup.GET("/teams", handler.GetSVTeams)
+				svGroup.PUT("/teams", handler.PutSVTeams)
 			}
 		}
 	}
