@@ -87,3 +87,14 @@ export const getTeams = async (): Promise<any> => {
         throw error;
     }
 }
+
+export const putTeams = async (team: any): Promise<void> => {
+    try {
+        await withTokenRequest.put('/sv/teams', team, {
+            headers: getRequestHeaders()
+        });
+    } catch (error) {
+        console.error('Error posting team:', error);
+        throw error;
+    }
+}

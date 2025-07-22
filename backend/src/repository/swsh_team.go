@@ -10,6 +10,7 @@ type (
 		Create(*gorm.DB, model.SwShTeam) error
 		ExistsBredPokemon(string) (bool, error)
 		FetchByUserId(string) ([]model.SwShTeamRelation, error)
+		Update(*gorm.DB, model.SwShTeam) error
 	}
 	SwShTeamRepository struct {
 		Db *gorm.DB
@@ -226,4 +227,12 @@ func (s *SwShTeamRepository) FetchByUserId(userId string) ([]model.SwShTeamRelat
 		return nil, err
 	}
 	return swshTeams, nil
+}
+
+func (s *SwShTeamRepository) Update(tx *gorm.DB, model model.SwShTeam) error {
+	result := tx.Updates(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }

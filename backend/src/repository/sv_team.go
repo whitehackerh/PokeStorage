@@ -10,6 +10,7 @@ type (
 		Create(*gorm.DB, model.SVTeam) error
 		ExistsBredPokemon(string) (bool, error)
 		FetchByUserId(string) ([]model.SVTeamRelation, error)
+		Update(*gorm.DB, model.SVTeam) error
 	}
 	SVTeamRepository struct {
 		Db *gorm.DB
@@ -226,4 +227,12 @@ func (s *SVTeamRepository) FetchByUserId(userId string) ([]model.SVTeamRelation,
 		return nil, err
 	}
 	return svTeams, nil
+}
+
+func (s *SVTeamRepository) Update(tx *gorm.DB, model model.SVTeam) error {
+	result := tx.Select("*").Omit("CreatedAt", "DeletedAt").Updates(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }

@@ -22,6 +22,10 @@ const TeamDetail = () => {
         }
     }, [location.state]);
 
+    const handleEditButtonClick = () => {
+        navigate('/register-team', { state: { title: title, team: team } });
+    }
+
     if (!title || !team) {
         return <Typography>Loading...</Typography>
     }
@@ -29,6 +33,7 @@ const TeamDetail = () => {
     return (
         <>
             <div>
+                <Button variant="contained" style={{ marginLeft: "630px", marginTop: "10px" }} onClick={handleEditButtonClick}>Edit</Button>
                 <Box sx={{ maxWidth: 1800, mx: 'auto', mt: 4 }}>
                     <div className="team-header">
                         <h1>{team.team.name}</h1>
@@ -115,7 +120,7 @@ const TeamDetail = () => {
                             </Paper>
                             </Grid>
                         ))}
-                    </Grid>
+                    </Grid><br />
                     <Box sx={{ display: 'flex', alignItems: 'flex-start', mt: 1 }}>
                         <Typography sx={{ fontWeight: 'bold', mr: 1 }}>Note:</Typography>
                         <Typography sx={{ whiteSpace: 'pre-wrap' }}>
