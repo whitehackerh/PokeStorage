@@ -11,6 +11,8 @@ type (
 		ExistsBredPokemon(string) (bool, error)
 		FetchByUserId(string) ([]model.SVTeamRelation, error)
 		Update(*gorm.DB, model.SVTeam) error
+		FindById(string) (model.SVTeam, error)
+		Delete(*gorm.DB, string) error
 	}
 	SVTeamRepository struct {
 		Db *gorm.DB
@@ -231,6 +233,23 @@ func (s *SVTeamRepository) FetchByUserId(userId string) ([]model.SVTeamRelation,
 
 func (s *SVTeamRepository) Update(tx *gorm.DB, model model.SVTeam) error {
 	result := tx.Select("*").Omit("CreatedAt", "DeletedAt").Updates(&model)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *SVTeamRepository) FindById(id string) (model.SVTeam, error) {
+	var team model.SVTeam
+	result := s.Db.Where("id = ?", id).Find(&team)
+	if result.Error != nil {
+		return model.SVTeam{}, result.Error
+	}
+	return team, result.Error
+}
+
+func (s *SVTeamRepository) Delete(tx *gorm.DB, id string) error {
+	result := tx.Where("id = ?", id).Delete(model.SVTeam{})
 	if result.Error != nil {
 		return result.Error
 	}
